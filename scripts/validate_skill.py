@@ -5,6 +5,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "SKILL.md"
+README = ROOT / "README.md"
+INSTALLERS = (ROOT / "install.ps1", ROOT / "install.sh")
+GEMINI_COMMAND = ROOT / "commands" / "gemini" / "prose-humanizer.toml"
 
 
 def fail(message: str) -> None:
@@ -37,5 +40,19 @@ if len(parts[2].strip()) < 500:
     fail("skill body is unexpectedly short")
 if "TODO" in text:
     fail("unfinished scaffold text found")
+
+for installer in INSTALLERS:
+    if not installer.is_file():
+        fail(f"{installer.name} is missing")
+
+if not GEMINI_COMMAND.is_file():
+    fail("Gemini slash-command adapter is missing")
+
+gemini_command = GEMINI_COMMAND.read_text(encoding="utf-8")
+if "{{args}}" not in gemini_command or "prose-humanizer" not in gemini_command:
+    fail("Gemini command must activate the skill and pass command arguments")
+
+if "—" in README.read_text(encoding="utf-8"):
+    fail("README must use ordinary hyphens instead of em dashes")
 
 print("Skill is valid.")

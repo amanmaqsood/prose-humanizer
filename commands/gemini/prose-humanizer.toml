@@ -1,0 +1,8 @@
+description = "Humanize prose while preserving the writer's voice and supported facts"
+prompt = """
+Activate and follow the `prose-humanizer` skill. Apply it to the request or draft below.
+
+{{args}}
+
+If no draft or actionable request was supplied, ask the user to paste or attach the writing. Preserve supported facts, quotations, citations, and intended meaning. Do not invent personal details or evidence.
+"""

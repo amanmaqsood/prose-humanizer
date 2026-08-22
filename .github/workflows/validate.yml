@@ -16,3 +16,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/validate_skill.py
+      - run: bash -n install.sh
+      - name: Test global installer in an isolated home
+        run: |
+          export PROSE_HUMANIZER_HOME="$RUNNER_TEMP/prose-humanizer-home"
+          ./install.sh
+          test -f "$PROSE_HUMANIZER_HOME/.claude/skills/prose-humanizer/SKILL.md"
+          test -f "$PROSE_HUMANIZER_HOME/.agents/skills/prose-humanizer/SKILL.md"
+          test -f "$PROSE_HUMANIZER_HOME/.gemini/commands/prose-humanizer.toml"

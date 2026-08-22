@@ -33,33 +33,51 @@ The workflow is built around four things: a real voice, concrete detail, varied 
 > [!IMPORTANT]
 > This is not an “undetectable AI” guarantee. Detector scores are inconsistent and cannot prove authorship. Prose Humanizer targets the standard readers actually experience: writing that is specific, credible and recognizably yours.
 
-## Start in 30 seconds - no coding required
+## Install once, use it anywhere
 
-1. Download [SKILL.md](SKILL.md) or the ready-to-upload ZIP from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest).
-2. Attach it to a ChatGPT, Claude, Gemini or other AI conversation.
-3. Attach or paste your draft. Add two or three samples of your writing if you want voice matching.
-4. Send this:
+The included installer adds Prose Humanizer to the global user-level skill folders for Claude Code, Gemini CLI and Codex. It also creates the Gemini slash-command adapter.
 
-```text
-Follow the attached Prose Humanizer skill. Rewrite my draft in my voice, preserve every supported fact and return only the revised copy.
+### Windows
+
+```powershell
+git clone https://github.com/amanmaqsood/prose-humanizer.git
+cd prose-humanizer
+.\install.ps1
 ```
 
-That is enough. The platform-specific options below make the skill reusable across future conversations.
+### macOS and Linux
 
-## Install for your AI
+```bash
+git clone https://github.com/amanmaqsood/prose-humanizer.git
+cd prose-humanizer
+chmod +x install.sh
+./install.sh
+```
 
-| Platform | Fastest setup |
+Then call it with the command your assistant supports:
+
+| Assistant | Command |
 |---|---|
-| **Claude.ai** | Download the ZIP from the latest release and upload it through **Settings → Features → Skills**. |
-| **Claude Code** | Clone the repository into `~/.claude/skills/prose-humanizer`. |
-| **Gemini CLI** | Run `gemini skills install https://github.com/amanmaqsood/prose-humanizer`. |
-| **ChatGPT** | Attach `SKILL.md` to a conversation; in the desktop app, use the Skills interface when custom Skills are available. |
-| **Codex** | Ask `$skill-installer` to install this repository, or clone it into `~/.agents/skills/prose-humanizer`. |
-| **Other assistants** | Attach `SKILL.md`, paste it into a reusable prompt/instruction feature or place it in the product's supported skills directory. |
+| **Claude Code** | `/prose-humanizer Rewrite this draft in my voice...` |
+| **Gemini CLI** | `/prose-humanizer Rewrite this draft in my voice...` |
+| **Codex** | `$prose-humanizer Rewrite this draft in my voice...` |
 
-Detailed commands and project-scoped options are in [INSTALL.md](INSTALL.md).
+Restart the assistant after the first installation. In Gemini CLI, `/commands reload` refreshes custom commands without a restart.
 
-The shared file format is intentional. [Anthropic](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), [Gemini CLI](https://geminicli.com/docs/cli/tutorials/skills-getting-started/) and [OpenAI](https://learn.chatgpt.com/docs/build-skills) all document skills built around a directory containing `SKILL.md` with `name` and `description` metadata.
+To update, run `git pull` inside the cloned repository and run the installer again. Detailed setup, manual installation and project-scoped options are in [INSTALL.md](INSTALL.md).
+
+## No-install option
+
+If you use ChatGPT, Claude.ai, Gemini on the web or another assistant without local skill folders:
+
+1. Download [SKILL.md](SKILL.md) or the ready-to-upload ZIP from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest).
+2. Attach it to the conversation or add it through the product's Skills interface.
+3. Attach or paste your draft. Add two or three samples of your writing if you want voice matching.
+4. Ask the assistant to follow Prose Humanizer and rewrite the draft while preserving supported facts.
+
+File upload remains a fallback for web products. The global installation is the recommended setup for command-line assistants.
+
+The shared file format is intentional. [Anthropic](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), [Gemini CLI](https://geminicli.com/docs/cli/tutorials/skills-getting-started/) and [OpenAI](https://help.openai.com/en/articles/20001066) all support reusable skills built around portable instruction files.
 
 ## Example prompts
 

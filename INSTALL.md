@@ -1,26 +1,66 @@
 # Install Prose Humanizer
 
-The repository is a portable Agent Skill: the root `SKILL.md` contains the instructions and required metadata. Choose the setup that matches your assistant.
+Install Prose Humanizer once at user scope, then call it by name whenever you need to draft, rewrite or edit prose.
 
-## No-code: any assistant with file uploads
+## Universal installer
 
-Download [SKILL.md](SKILL.md), attach it to a conversation and say:
+The installer configures three local assistants in one pass:
 
-```text
-Follow the attached Prose Humanizer skill for this conversation.
+| Assistant | Installed location | Command |
+|---|---|---|
+| Claude Code | `~/.claude/skills/prose-humanizer/` | `/prose-humanizer` |
+| Gemini CLI | `~/.agents/skills/prose-humanizer/` plus a command adapter in `~/.gemini/commands/` | `/prose-humanizer` |
+| Codex | `~/.agents/skills/prose-humanizer/` | `$prose-humanizer` |
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/amanmaqsood/prose-humanizer.git
+cd prose-humanizer
+.\install.ps1
 ```
 
-Then provide your draft, brief and optional writing samples. This works as a one-conversation setup in ChatGPT, Claude, Gemini and other assistants that can read Markdown files.
+### macOS and Linux
 
-## Claude.ai
+```bash
+git clone https://github.com/amanmaqsood/prose-humanizer.git
+cd prose-humanizer
+chmod +x install.sh
+./install.sh
+```
 
-1. Download `prose-humanizer.zip` from the [latest GitHub release](https://github.com/amanmaqsood/prose-humanizer/releases/latest).
-2. Open Claude **Settings → Features**.
-3. Upload the ZIP as a custom Skill.
+Restart Claude Code or Codex after the first installation. In Gemini CLI, run `/commands reload` or restart the CLI.
 
-Anthropic documents custom ZIP uploads for supported Claude.ai plans with code execution enabled. Custom Skills are stored separately on each Claude surface, so a Claude.ai upload does not automatically install the Claude Code version.
+### Use it
 
-## Claude Code
+Claude Code or Gemini CLI:
+
+```text
+/prose-humanizer Rewrite this email in my voice. Preserve the dates, prices and links. Return only the revised email.
+```
+
+Codex:
+
+```text
+$prose-humanizer Rewrite this email in my voice. Preserve the dates, prices and links. Return only the revised email.
+```
+
+You can also attach a file, select text or refer to a draft already in the conversation.
+
+## Update
+
+Pull the newest version and rerun the same installer:
+
+```bash
+git pull
+./install.sh
+```
+
+On Windows, replace the second command with `./install.ps1`. The installer overwrites only Prose Humanizer's own files and the matching Gemini command adapter.
+
+## Manual and platform-specific installation
+
+### Claude Code
 
 Personal installation:
 
@@ -34,36 +74,25 @@ Project installation:
 git clone https://github.com/amanmaqsood/prose-humanizer.git .claude/skills/prose-humanizer
 ```
 
-Claude Code discovers custom skills in `~/.claude/skills/` for personal use and `.claude/skills/` for a project.
+Claude Code discovers personal skills in `~/.claude/skills/` and project skills in `.claude/skills/`. A skill named `prose-humanizer` can be invoked directly as `/prose-humanizer`.
 
-## Gemini CLI
+### Gemini CLI
 
-Install directly from GitHub:
+Gemini can install the skill directly from GitHub:
 
 ```bash
 gemini skills install https://github.com/amanmaqsood/prose-humanizer
 ```
 
-For workspace scope:
-
-```bash
-gemini skills install https://github.com/amanmaqsood/prose-humanizer --scope workspace
-```
-
-Verify or refresh inside Gemini CLI:
+That installs the skill, but the direct `/prose-humanizer` shortcut also needs the included file at `commands/gemini/prose-humanizer.toml` copied to:
 
 ```text
-/skills list
-/skills reload
+~/.gemini/commands/prose-humanizer.toml
 ```
 
-Gemini also discovers user skills under `~/.gemini/skills/` or `~/.agents/skills/`, and workspace skills under `.gemini/skills/` or `.agents/skills/`.
+The universal installer performs both steps. Run `/commands reload` after changing a custom command.
 
-## ChatGPT
-
-For any ChatGPT conversation, attach `SKILL.md` and ask ChatGPT to follow Prose Humanizer for the task. In the ChatGPT desktop app, the Skills interface can keep reusable Skills available beyond one conversation when that feature is available to your account.
-
-## Codex
+### Codex
 
 Ask the built-in installer:
 
@@ -71,32 +100,30 @@ Ask the built-in installer:
 $skill-installer install prose-humanizer from https://github.com/amanmaqsood/prose-humanizer
 ```
 
-Or clone it manually for your user account:
+Or clone it for your user account:
 
 ```bash
 git clone https://github.com/amanmaqsood/prose-humanizer.git ~/.agents/skills/prose-humanizer
 ```
 
-PowerShell:
+Codex's explicit skill syntax uses `$prose-humanizer`. You can also let Codex select the skill automatically when the request matches its description.
 
-```powershell
-git clone https://github.com/amanmaqsood/prose-humanizer.git "$env:USERPROFILE\.agents\skills\prose-humanizer"
-```
+## ChatGPT and Claude.ai
 
-For one repository:
+Web and desktop products manage reusable skills through their own interfaces rather than the local CLI folders above.
 
-```text
-your-project/.agents/skills/prose-humanizer/
-```
+- In ChatGPT, use the Skills area when it is available for your account, or attach `SKILL.md` to a conversation.
+- In Claude.ai, download `prose-humanizer.zip` from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest) and upload it as a custom Skill on supported plans.
 
-If a newly installed skill does not appear, restart the app or CLI.
+Personal Skills may need to be installed separately on different product surfaces. File upload is still useful here, but it is no longer the primary setup for local assistants.
 
-## Other tools
+## Other assistants
 
-If your assistant supports the Agent Skills format, point its skill installer or skills directory at this repository. Otherwise, use the no-code file-upload method or paste `SKILL.md` into the product's reusable instructions feature.
+If an assistant supports the Agent Skills format, point its installer or user-level skills directory at this repository. Otherwise, add `SKILL.md` to its reusable instructions or prompt library.
 
-Platform behavior changes over time. The current primary references are:
+Current primary references:
 
-- [Anthropic Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
+- [Claude Code skills](https://code.claude.com/docs/en/skills)
 - [Gemini CLI Agent Skills](https://geminicli.com/docs/cli/using-agent-skills/)
-- [OpenAI Build Skills](https://learn.chatgpt.com/docs/build-skills)
+- [Gemini CLI custom commands](https://geminicli.com/docs/cli/custom-commands/)
+- [OpenAI Skills](https://help.openai.com/en/articles/20001066)
