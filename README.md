@@ -33,7 +33,7 @@ The workflow is built around four things: a real voice, concrete detail, varied 
 > [!IMPORTANT]
 > This is not an “undetectable AI” guarantee. Detector scores are inconsistent and cannot prove authorship. Prose Humanizer targets the standard readers actually experience: writing that is specific, credible and recognizably yours.
 
-## Start in 30 seconds — no coding required
+## Start in 30 seconds - no coding required
 
 1. Download [SKILL.md](SKILL.md) or the ready-to-upload ZIP from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest).
 2. Attach it to a ChatGPT, Claude, Gemini or other AI conversation.
