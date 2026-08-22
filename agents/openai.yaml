@@ -1,10 +1,10 @@
 interface:
-  display_name: "Human Written Content"
-  short_description: "Write specific, truthful prose in your voice"
+  display_name: "Prose Humanizer"
+  short_description: "Humanize prose without inventing details"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#D4653D"
-  default_prompt: "Use $human-written-content to rewrite this draft in my voice while preserving every supported fact."
+  default_prompt: "Use $prose-humanizer to rewrite this draft in my voice while preserving every supported fact."
 
 policy:
   allow_implicit_invocation: true

@@ -29,7 +29,7 @@ description_match = re.search(r"(?m)^description:\s*(.+?)\s*$", frontmatter)
 
 if not name_match:
     fail("frontmatter needs a lowercase hyphenated name")
-if name_match.group(1) != "human-written-content":
+if name_match.group(1) != "prose-humanizer":
     fail("skill name must match the repository")
 if not description_match or len(description_match.group(1).strip('"')) < 30:
     fail("frontmatter needs a discriminating description")

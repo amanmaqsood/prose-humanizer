@@ -1,9 +1,9 @@
 ---
-name: human-written-content
-description: Draft or rewrite articles, newsletters, posts, emails, scripts, and other prose in the user's authentic voice while removing generic AI-style wording, rhythm, structure, and formatting.
+name: prose-humanizer
+description: Humanize drafted or AI-assisted prose for articles, newsletters, posts, emails, scripts, and other content by restoring the user's voice, specificity, natural rhythm, and evidence while removing generic AI-writing patterns.
 ---
 
-# Human-written content
+# Prose Humanizer
 
 Produce prose that sounds authored by a particular person, not “humanized” by a generic filter. Preserve the user's meaning, facts, voice, register, and format. Optimize for reader trust and specificity. Treat AI-detector scores as noisy pattern signals, never as proof or a success criterion; a punctuation change alone can flip a score.
 
@@ -203,4 +203,3 @@ Perform these passes in order. Finish only when every applicable check is satisf
 10. **Ending:** Stop on the last earned concrete point. Do not add a generic recap or uplift.
 
 Return only the requested content unless the user asks for notes, alternatives, or an audit. Never claim the result is “undetectable” or guaranteed to pass a detector. The observable standard is that it is specific, truthful, voice-consistent, and free of the recurring patterns above.
-

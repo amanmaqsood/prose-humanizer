@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
-  <title id="title">Human Written Content</title>
+  <title id="title">Prose Humanizer</title>
   <desc id="desc">A banner for a writing skill built around voice, truth and specificity.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -19,8 +19,8 @@
     <circle cx="132" cy="176" r="19" fill="#172033"/>
     <path d="M56 276h152" stroke="#F7E8D8" stroke-width="20" stroke-linecap="round"/>
   </g>
-  <text x="390" y="170" fill="#FFF8EF" font-family="Segoe UI, Arial, sans-serif" font-size="68" font-weight="750">Human Written Content</text>
-  <text x="394" y="230" fill="#F0B89F" font-family="Segoe UI, Arial, sans-serif" font-size="29">A Codex skill for voice, truth and specificity.</text>
+  <text x="390" y="170" fill="#FFF8EF" font-family="Segoe UI, Arial, sans-serif" font-size="76" font-weight="750">Prose Humanizer</text>
+  <text x="394" y="230" fill="#F0B89F" font-family="Segoe UI, Arial, sans-serif" font-size="29">For ChatGPT, Claude, Gemini and other AI assistants.</text>
   <g fill="#AEB9CE" font-family="Segoe UI, Arial, sans-serif" font-size="23">
     <text x="394" y="306">No fake anecdotes.</text>
     <text x="628" y="306">No inflated prose.</text>
