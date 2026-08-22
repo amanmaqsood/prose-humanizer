@@ -1,0 +1,10 @@
+interface:
+  display_name: "Human Written Content"
+  short_description: "Write specific, truthful prose in your voice"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#D4653D"
+  default_prompt: "Use $human-written-content to rewrite this draft in my voice while preserving every supported fact."
+
+policy:
+  allow_implicit_invocation: true

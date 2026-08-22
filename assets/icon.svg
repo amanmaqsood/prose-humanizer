@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Human Written Content icon</title>
+  <desc id="desc">A warm orange fountain pen nib over a dark page.</desc>
+  <rect width="512" height="512" rx="112" fill="#172033"/>
+  <path d="M256 76 390 210l-92 184H214L122 210 256 76Z" fill="#D4653D"/>
+  <path d="m256 76 32 226-32 55-32-55 32-226Z" fill="#F7E8D8"/>
+  <circle cx="256" cy="302" r="25" fill="#172033"/>
+  <path d="M158 420h196" stroke="#F7E8D8" stroke-width="26" stroke-linecap="round"/>
+</svg>

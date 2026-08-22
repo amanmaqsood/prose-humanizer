@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">Human Written Content</title>
+  <desc id="desc">A banner for a writing skill built around voice, truth and specificity.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172033"/>
+      <stop offset="1" stop-color="#273552"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="80%" cy="20%" r="70%">
+      <stop offset="0" stop-color="#D4653D" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#D4653D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="420" rx="28" fill="url(#bg)"/>
+  <rect width="1200" height="420" rx="28" fill="url(#glow)"/>
+  <g transform="translate(86 68)">
+    <path d="m132 0 104 104-72 144H100L28 104 132 0Z" fill="#D4653D"/>
+    <path d="m132 0 24 176-24 44-24-44L132 0Z" fill="#F7E8D8"/>
+    <circle cx="132" cy="176" r="19" fill="#172033"/>
+    <path d="M56 276h152" stroke="#F7E8D8" stroke-width="20" stroke-linecap="round"/>
+  </g>
+  <text x="390" y="170" fill="#FFF8EF" font-family="Segoe UI, Arial, sans-serif" font-size="68" font-weight="750">Human Written Content</text>
+  <text x="394" y="230" fill="#F0B89F" font-family="Segoe UI, Arial, sans-serif" font-size="29">A Codex skill for voice, truth and specificity.</text>
+  <g fill="#AEB9CE" font-family="Segoe UI, Arial, sans-serif" font-size="23">
+    <text x="394" y="306">No fake anecdotes.</text>
+    <text x="628" y="306">No inflated prose.</text>
+    <text x="846" y="306">No detector promises.</text>
+  </g>
+</svg>
