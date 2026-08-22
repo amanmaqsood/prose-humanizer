@@ -53,7 +53,8 @@ That is enough. The platform-specific options below make the skill reusable acro
 | **Claude.ai** | Download the ZIP from the latest release and upload it through **Settings → Features → Skills**. |
 | **Claude Code** | Clone the repository into `~/.claude/skills/prose-humanizer`. |
 | **Gemini CLI** | Run `gemini skills install https://github.com/amanmaqsood/prose-humanizer`. |
-| **ChatGPT / Codex** | Ask `$skill-installer` to install this repository, or clone it into `~/.agents/skills/prose-humanizer`. |
+| **ChatGPT** | Attach `SKILL.md` to a conversation; in the desktop app, use the Skills interface when custom Skills are available. |
+| **Codex** | Ask `$skill-installer` to install this repository, or clone it into `~/.agents/skills/prose-humanizer`. |
 | **Other assistants** | Attach `SKILL.md`, paste it into a reusable prompt/instruction feature or place it in the product's supported skills directory. |
 
 Detailed commands and project-scoped options are in [INSTALL.md](INSTALL.md).

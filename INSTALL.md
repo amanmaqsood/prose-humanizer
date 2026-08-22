@@ -59,7 +59,11 @@ Verify or refresh inside Gemini CLI:
 
 Gemini also discovers user skills under `~/.gemini/skills/` or `~/.agents/skills/`, and workspace skills under `.gemini/skills/` or `.agents/skills/`.
 
-## ChatGPT and Codex
+## ChatGPT
+
+For any ChatGPT conversation, attach `SKILL.md` and ask ChatGPT to follow Prose Humanizer for the task. In the ChatGPT desktop app, the Skills interface can keep reusable Skills available beyond one conversation when that feature is available to your account.
+
+## Codex
 
 Ask the built-in installer:
 
