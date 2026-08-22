@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "prose-humanizer",
+  "description": "Draft, rewrite, voice-match, and audit prose without inventing facts or flattening the writer.",
+  "version": "3.0.0",
+  "author": {
+    "name": "Aman Maqsood",
+    "url": "https://github.com/amanmaqsood"
+  },
+  "homepage": "https://github.com/amanmaqsood/prose-humanizer",
+  "repository": "https://github.com/amanmaqsood/prose-humanizer",
+  "license": "MIT",
+  "keywords": ["writing", "editing", "voice", "humanize", "prose", "audit"],
+  "skills": ["./"]
+}

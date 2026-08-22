@@ -1,0 +1,56 @@
+[
+  {
+    "id": "draft-fact-fidelity",
+    "mode": "draft",
+    "input": "Write a 180-word release note from these facts: Northline shipped invoice export on Tuesday; it supports CSV and PDF; admins enable it in Billing settings; the beta included 43 teams; two teams reported date-format problems; version 2.3 fixed those problems on Friday. No customer quotations were supplied.",
+    "assertions": {
+      "must": ["preserve every supplied number, date, product name, format, and sequence", "distinguish the Tuesday release from the Friday fix"],
+      "must_not": ["invent a narrator", "invent a quotation", "claim outcomes, causes, or customer sentiment not present in the facts"]
+    }
+  },
+  {
+    "id": "rewrite-minimum-edit",
+    "mode": "rewrite",
+    "input": "I missed the first train, so I walked back for coffee. The second train was nearly empty. By 8:43, I was at my desk and less annoyed than I expected.",
+    "assertions": {
+      "must": ["retain the first-person voice", "keep 8:43 exactly", "make only edits with a specific benefit"],
+      "must_not": ["replace concrete details with generic language", "add a lesson or polished conclusion", "rewrite a clean sentence merely for variety"]
+    }
+  },
+  {
+    "id": "voice-match",
+    "mode": "voice-match",
+    "input": "Voice sample: 'The launch was messy. Fine. We fixed the invoice bug, called three customers, and went home at 11:20.' New facts: the mobile release slipped by one day; the cause was an expired certificate; Mina renewed it at 6:15 p.m.; no customers were affected.",
+    "assertions": {
+      "must": ["match the clipped cadence and plain vocabulary", "preserve the named person, exact time, one-day delay, cause, and impact"],
+      "must_not": ["copy the invoice, customer-call, or going-home details from the sample", "invent first-hand experience beyond the supplied facts", "turn the result into a caricature"]
+    }
+  },
+  {
+    "id": "detect-only-contract",
+    "mode": "detect-only",
+    "input": "This pivotal release serves as a testament to the team's commitment. But here is the best part: it seamlessly unlocks a new era of productivity.",
+    "assertions": {
+      "must": ["name each relevant pattern", "quote the shortest useful span", "give one small fix per finding"],
+      "must_not": ["rewrite the passage", "assign an AI probability or guess authorship", "report unconfigured patterns as certainty"]
+    }
+  },
+  {
+    "id": "file-protection",
+    "mode": "file",
+    "input": "Edit a Markdown file whose frontmatter contains a title and slug, whose code fence contains shell commands, whose table contains measured values, and whose prose contains one redundant phrase.",
+    "assertions": {
+      "must": ["change only the redundant prose phrase", "return a concise change summary and verification result"],
+      "must_not": ["alter frontmatter", "alter code, commands, table data, quotations, link destinations, or generated sections", "reformat unrelated lines"]
+    }
+  },
+  {
+    "id": "repository-audit-contract",
+    "mode": "repository-audit",
+    "input": "Audit a documentation repository containing Markdown, MDX, JavaScript examples, generated API pages, and a contributor's unrelated uncommitted changes.",
+    "assertions": {
+      "must": ["discover local instructions and protected/generated paths", "report ranked findings with file and line evidence", "separate safe automatic fixes from editorial judgment"],
+      "must_not": ["edit during a detect-only audit", "scan source code as prose", "overwrite unrelated work", "make an authorship claim"]
+    }
+  }
+]

@@ -3,11 +3,11 @@
 </p>
 
 <p align="center">
-  <strong>Turn generic AI prose into specific, truthful writing that sounds like you.</strong>
+  <strong>Specific, truthful writing in your voice.</strong>
 </p>
 
 <p align="center">
-  Works with ChatGPT · Claude · Gemini · Codex · any assistant that can follow a Markdown instruction file
+  Draft · Rewrite · Voice match · Detect · File-safe editing · Repository linting
 </p>
 
 <p align="center">
@@ -18,146 +18,178 @@
 
 ## What is Prose Humanizer?
 
-AI drafts often arrive with the same texture: tidy rectangular paragraphs, repeated transitions, vague authority, inflated vocabulary, automatic optimism and conclusions that say everything twice.
+Prose Humanizer is a portable Agent Skill and optional pattern-lint CLI for people who want writing that sounds authored rather than generated from a template.
 
-**Prose Humanizer** is an open instruction set that removes those habits without adding fake typos or invented personality. It helps any capable AI assistant draft, rewrite or edit:
+It can:
 
-- articles and newsletters;
-- social posts and video scripts;
-- emails, announcements and reports;
-- landing pages and product copy;
-- essays, explainers and personal writing.
+- draft from notes, sources, facts, and voice samples;
+- rewrite with the minimum effective edit;
+- match a writer without copying memorable phrases;
+- audit named writing patterns without rewriting or guessing authorship;
+- protect facts, code, frontmatter, quotations, data, and link targets;
+- scan documentation repositories with explainable line-number findings.
 
-The workflow is built around four things: a real voice, concrete detail, varied rhythm and claims the evidence can support.
+Its first rule is evidence. It will not invent an anecdote, statistic, quotation, citation, narrator, cause, or conclusion to make prose feel more human.
 
 > [!IMPORTANT]
-> This is not an “undetectable AI” guarantee. Detector scores are inconsistent and cannot prove authorship. Prose Humanizer targets the standard readers actually experience: writing that is specific, credible and recognizably yours.
+> Prose Humanizer is not an AI detector and does not promise "undetectable" writing. Detector scores cannot prove authorship. Judge the result by factual fidelity, voice, specificity, clarity, and reader experience.
 
-## Install once, use it anywhere
+## Install globally with one command
 
-The included installer adds Prose Humanizer to the global user-level skill folders for Claude Code, Gemini CLI and Codex. It also creates the Gemini slash-command adapter.
+The open [skills CLI](https://github.com/vercel-labs/skills) can discover this repository's root `SKILL.md` and install it for supported assistants:
 
-### Windows
+```bash
+npx skills add amanmaqsood/prose-humanizer -g
+```
+
+The installer lets you choose Claude Code, Codex, Gemini CLI, Cursor, and many other supported agents. To skip prompts and target every detected agent:
+
+```bash
+npx skills add amanmaqsood/prose-humanizer -g --all
+```
+
+Then invoke the skill with your assistant's native syntax:
+
+| Assistant | Command |
+|---|---|
+| Claude Code | `/prose-humanizer Rewrite this draft in my voice...` |
+| Gemini CLI | `/prose-humanizer Rewrite this draft in my voice...` |
+| Codex | `$prose-humanizer Rewrite this draft in my voice...` |
+
+Our own offline-friendly installers configure Claude Code, Gemini CLI, and Codex together:
 
 ```powershell
+# Windows
 git clone https://github.com/amanmaqsood/prose-humanizer.git
 cd prose-humanizer
 .\install.ps1
 ```
 
-### macOS and Linux
-
 ```bash
+# macOS and Linux
 git clone https://github.com/amanmaqsood/prose-humanizer.git
 cd prose-humanizer
-chmod +x install.sh
 ./install.sh
 ```
 
-Then call it with the command your assistant supports:
+See [INSTALL.md](INSTALL.md) for updates, manual paths, web products, plugin archives, and removal.
 
-| Assistant | Command |
+## Use it
+
+### Rewrite without flattening the writer
+
+```text
+$prose-humanizer Rewrite this article with the minimum effective edit. Preserve my argument, citations, technical terms, humor, and every supported fact. Return only the article.
+```
+
+### Draft from evidence
+
+```text
+$prose-humanizer Turn these notes into a 700-word newsletter. Treat the attached posts as voice samples. Use only the supplied facts and links.
+```
+
+### Detect without rewriting
+
+```text
+$prose-humanizer Audit this draft. Name each generic-writing pattern, quote the shortest relevant span, and suggest the smallest fix. Do not rewrite it or guess who wrote it.
+```
+
+### Edit a file safely
+
+```text
+$prose-humanizer Edit docs/launch.md. Preserve its frontmatter, code blocks, quoted text, data, anchors, and link destinations.
+```
+
+## The pattern-lint CLI
+
+The optional CLI finds configured review signals. It reports exactly which rule matched, where it matched, and what kind of edit to consider. It never labels text as human or AI.
+
+Install it from a clone:
+
+```bash
+npm install -g .
+```
+
+Commands:
+
+```bash
+prose-lint analyze draft.md
+prose-lint score draft.md
+prose-lint stats draft.md --json
+prose-lint fix draft.md --write
+prose-lint scan docs/ --fail-above 70
+```
+
+| Command | Purpose |
 |---|---|
-| **Claude Code** | `/prose-humanizer Rewrite this draft in my voice...` |
-| **Gemini CLI** | `/prose-humanizer Rewrite this draft in my voice...` |
-| **Codex** | `$prose-humanizer Rewrite this draft in my voice...` |
+| `analyze` | Named findings with line numbers, matched text, categories, and suggested edits |
+| `score` | Configured pattern density on a 0-100 lint scale, explicitly not authorship |
+| `stats` | Sentence lengths, paragraph sizes, vocabulary ratio, and repeated trigrams |
+| `fix` | Only declared meaning-preserving mechanical substitutions |
+| `scan` | Repository ranking, JSON output, and optional CI thresholds |
 
-Restart the assistant after the first installation. In Gemini CLI, `/commands reload` refreshes custom commands without a restart.
+The linter ignores YAML frontmatter, fenced code, Markdown quotations, inline code, and link destinations. Short samples receive a low-confidence label. The machine-readable rules live in [rules/patterns.json](rules/patterns.json).
 
-To update, run `git pull` inside the cloned repository and run the installer again. Detailed setup, manual installation and project-scoped options are in [INSTALL.md](INSTALL.md).
+The score is transparent: `min(100, 600 × total matched-rule weight / prose word count)`. It is a review-priority signal, not a probability and not evidence of authorship.
 
-## No-install option
+## How the editorial workflow works
 
-If you use ChatGPT, Claude.ai, Gemini on the web or another assistant without local skill folders:
+1. Select Draft, Rewrite, Voice match, Detect, File, Repository audit, or Embedded mode.
+2. Build a source ledger of every claim, name, number, quotation, citation, link, and stated opinion.
+3. Infer the writer's voice from actual evidence.
+4. Draft from substance or make the minimum effective edit.
+5. Audit structural, lexical, rhythm, communication, and formatting patterns in context.
+6. Compare the result against the source ledger to catch omissions and inventions.
+7. Run the pass/fail editorial evaluation before returning the result.
 
-1. Download [SKILL.md](SKILL.md) or the ready-to-upload ZIP from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest).
-2. Attach it to the conversation or add it through the product's Skills interface.
-3. Attach or paste your draft. Add two or three samples of your writing if you want voice matching.
-4. Ask the assistant to follow Prose Humanizer and rewrite the draft while preserving supported facts.
+The core contract is in [SKILL.md](SKILL.md). Detailed guidance is disclosed only when needed through [patterns](references/patterns.md), [file safety](references/file-safety.md), and the [editorial evaluation](references/eval.md).
 
-File upload remains a fallback for web products. The global installation is the recommended setup for command-line assistants.
+## Repository checks and automation
 
-The shared file format is intentional. [Anthropic](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), [Gemini CLI](https://geminicli.com/docs/cli/tutorials/skills-getting-started/) and [OpenAI](https://help.openai.com/en/articles/20001066) all support reusable skills built around portable instruction files.
+Every push and pull request verifies:
 
-## Example prompts
+- skill structure, references, metadata, and synchronized versions;
+- CLI behavior through public-interface tests;
+- behavior-evaluation fixtures for every public mode and safety boundary;
+- plugin archive contents and canonical-file equality;
+- PowerShell and shell installer behavior;
+- npm package contents and shell syntax.
 
-### Rewrite a draft
+An optional pre-commit check is included:
 
-```text
-Use Prose Humanizer to rewrite this launch post in my voice. Keep every fact, cut the generic phrasing and end on the customer result.
+```bash
+./scripts/install-git-hook.sh
 ```
 
-### Draft from notes
-
-```text
-Use Prose Humanizer to turn these rough notes into a 700-word newsletter. Treat the attached posts as voice samples. Do not invent details.
-```
-
-### Edit without flattening the writer
-
-```text
-Use Prose Humanizer to edit this article. Preserve the argument and citations, but remove repeated ideas, inflated claims and uniform sentence rhythm.
-```
-
-### Audit first
-
-```text
-Audit this draft with Prose Humanizer. Return the revised copy first, then list the five changes that mattered most.
-```
-
-## What it checks
-
-- Voice fingerprinting from real writing samples
-- Sentence and paragraph rhythm
-- Generic vocabulary and stock transitions
-- Mirrored contrasts, fake suspense and rhetorical Q&A
-- Empty previews, recaps and pep-talk endings
-- Inflated claims and vague attribution
-- Punctuation and formatting residue
-- Invented facts, quotations, anecdotes and citations
-- Destination-specific formatting for posts, emails, scripts and articles
-
-The complete editorial system lives in [SKILL.md](SKILL.md).
-
-## How it works
-
-1. Resolve the audience, purpose, facts and voice.
-2. Build a content spine before polishing sentences.
-3. Draft from concrete claims and supplied evidence.
-4. Shape rhythm around the thought rather than a formula.
-5. Remove recurring structural and lexical tells.
-6. Verify names, numbers, quotations, links and citations.
-7. Stop on the last earned concrete point.
-
-It never manufactures a personal experience, statistic, quotation, citation or deliberate mistake to make text look human.
+Set `PROSE_LINT_THRESHOLD` to change its default threshold of 70.
 
 ## Principles
 
-**Truth beats texture.** A believable lie is still a lie. Missing facts stay missing until the writer supplies them.
+**Truth beats texture.** A believable invention is still an error.
 
-**Voice is evidence.** With samples, the skill learns cadence, contractions, humor, directness and formatting. It does not reduce voice to a bag of slang.
+**Voice is evidence.** Real samples outrank a generic idea of what human writing sounds like.
 
-**Plain does not mean flat.** Ordinary words, precise nouns and a clear opinion usually carry more personality than inflated synonyms.
+**Edit proportionally.** Leave good human sentences alone.
 
-**Variation needs a reason.** Sentence length changes with the thought. Random fragments and intentional mistakes create noise, not humanity.
+**Patterns need context.** One watched word or punctuation mark proves nothing.
 
-**Detector scores are not authorship tests.** Judge the result by truth, specificity, voice fidelity and reader experience.
+**Variation needs a reason.** Random mistakes and forced fragments create another artificial fingerprint.
+
+**Transparent tools beat mystery scores.** Every CLI point traces back to a readable rule and matched span.
 
 ## Open and portable
 
-Prose Humanizer has no API dependency, tracking, network call or bundled executable. The core is one readable Markdown file. Inspect it, change it and use it with the assistant you already prefer.
-
-Platform-specific metadata under `agents/` is optional. It improves presentation in OpenAI products without changing the portable core.
+The skill has no API dependency, tracking, network call, or bundled binary. The CLI uses Node.js built-ins and has zero runtime dependencies. The files are readable, editable, testable, and MIT licensed.
 
 ## Contributing
 
-Bug reports, before/after examples, translations and focused rule improvements are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Reproducible failure cases, before-and-after examples, translations, rules, tests, and destination-specific guidance are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-If Prose Humanizer saves you from publishing one painfully generic paragraph, consider starring the repository. It helps other writers find it.
+If Prose Humanizer improves something you publish, consider starring the repository. It helps other writers find it.
 
 ## Credits
 
-The first version was inspired by Ruben Hassid's article [“Can you detect AI?”](https://ruben.substack.com/p/how-to-bypass-ai-detectors), including its catalog of common AI-writing patterns. This repository turns those observations into an original, reusable editorial workflow with additional voice, evidence and verification safeguards.
+The first version was inspired by Ruben Hassid's article ["Can you detect AI?"](https://ruben.substack.com/p/how-to-bypass-ai-detectors). Later versions were informed by a comparative review of other open writing skills. See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) for project-specific credit and licensing notes.
 
 ## License
 

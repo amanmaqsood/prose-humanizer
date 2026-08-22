@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import re
 import sys
 
@@ -8,6 +9,17 @@ SKILL = ROOT / "SKILL.md"
 README = ROOT / "README.md"
 INSTALLERS = (ROOT / "install.ps1", ROOT / "install.sh")
 GEMINI_COMMAND = ROOT / "commands" / "gemini" / "prose-humanizer.toml"
+PACKAGE = ROOT / "package.json"
+CODEX_PLUGIN = ROOT / ".codex-plugin" / "plugin.json"
+CLAUDE_PLUGIN = ROOT / ".claude-plugin" / "plugin.json"
+RULES = ROOT / "rules" / "patterns.json"
+EVALS = ROOT / "evals" / "cases.json"
+REFERENCES = (
+    ROOT / "references" / "eval.md",
+    ROOT / "references" / "file-safety.md",
+    ROOT / "references" / "patterns.md",
+)
+CLI = ROOT / "bin" / "prose-lint.js"
 
 
 def fail(message: str) -> None:
@@ -54,5 +66,24 @@ if "{{args}}" not in gemini_command or "prose-humanizer" not in gemini_command:
 
 if "—" in README.read_text(encoding="utf-8"):
     fail("README must use ordinary hyphens instead of em dashes")
+
+for required in (*REFERENCES, CLI, RULES, EVALS, PACKAGE, CODEX_PLUGIN, CLAUDE_PLUGIN):
+    if not required.is_file():
+        fail(f"required package file is missing: {required.relative_to(ROOT)}")
+
+package = json.loads(PACKAGE.read_text(encoding="utf-8"))
+codex_plugin = json.loads(CODEX_PLUGIN.read_text(encoding="utf-8"))
+claude_plugin = json.loads(CLAUDE_PLUGIN.read_text(encoding="utf-8"))
+rules = json.loads(RULES.read_text(encoding="utf-8"))
+versions = {package.get("version"), codex_plugin.get("version"), claude_plugin.get("version")}
+if len(versions) != 1 or None in versions:
+    fail("package and plugin versions must match")
+if len(rules.get("patterns", [])) < 15:
+    fail("machine-readable pattern catalog is unexpectedly small")
+
+for reference in REFERENCES:
+    relative = reference.relative_to(ROOT).as_posix()
+    if relative not in text:
+        fail(f"SKILL.md does not route to {relative}")
 
 print("Skill is valid.")

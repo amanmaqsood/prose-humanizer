@@ -26,12 +26,23 @@ function Copy-SkillFile {
     Copy-Item -LiteralPath $Source -Destination $Destination -Force
 }
 
-Copy-SkillFile -Source (Join-Path $sourceRoot "SKILL.md") -Destination (Join-Path $claudeSkill "SKILL.md")
+function Copy-SkillPackage {
+    param([Parameter(Mandatory)] [string]$Destination)
 
-Copy-SkillFile -Source (Join-Path $sourceRoot "SKILL.md") -Destination (Join-Path $agentSkill "SKILL.md")
-Copy-SkillFile -Source (Join-Path $sourceRoot "agents\openai.yaml") -Destination (Join-Path $agentSkill "agents\openai.yaml")
-Copy-SkillFile -Source (Join-Path $sourceRoot "assets\icon.svg") -Destination (Join-Path $agentSkill "assets\icon.svg")
-Copy-SkillFile -Source (Join-Path $sourceRoot "assets\banner.svg") -Destination (Join-Path $agentSkill "assets\banner.svg")
+    foreach ($filename in @("SKILL.md", "package.json", "LICENSE")) {
+        Copy-SkillFile -Source (Join-Path $sourceRoot $filename) -Destination (Join-Path $Destination $filename)
+    }
+    foreach ($directory in @("agents", "assets", "bin", "evals", "references", "rules")) {
+        $sourceDirectory = Join-Path $sourceRoot $directory
+        Get-ChildItem -LiteralPath $sourceDirectory -File -Recurse | ForEach-Object {
+            $relativePath = [System.IO.Path]::GetRelativePath($sourceRoot, $_.FullName)
+            Copy-SkillFile -Source $_.FullName -Destination (Join-Path $Destination $relativePath)
+        }
+    }
+}
+
+Copy-SkillPackage -Destination $claudeSkill
+Copy-SkillPackage -Destination $agentSkill
 
 Copy-SkillFile -Source (Join-Path $sourceRoot "commands\gemini\prose-humanizer.toml") -Destination (Join-Path $geminiCommands "prose-humanizer.toml")
 
@@ -39,4 +50,5 @@ Write-Host "Prose Humanizer is installed globally for this user."
 Write-Host "Claude Code: /prose-humanizer"
 Write-Host "Gemini CLI:  /prose-humanizer"
 Write-Host 'Codex:       $prose-humanizer'
+Write-Host "Optional lint CLI: run 'npm install -g .' from the cloned repository."
 Write-Host "Restart the assistant, or run /commands reload in Gemini CLI, if the command is not visible yet."

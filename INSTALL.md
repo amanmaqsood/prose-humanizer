@@ -1,16 +1,34 @@
 # Install Prose Humanizer
 
-Install Prose Humanizer once at user scope, then call it by name whenever you need to draft, rewrite or edit prose.
+Choose one installation method. The skills CLI is the broadest option; the repository installers configure Claude Code, Gemini CLI, and Codex together without requiring a package registry.
 
-## Universal installer
+## One-command global installation
 
-The installer configures three local assistants in one pass:
+Interactive installation for supported agents:
 
-| Assistant | Installed location | Command |
-|---|---|---|
-| Claude Code | `~/.claude/skills/prose-humanizer/` | `/prose-humanizer` |
-| Gemini CLI | `~/.agents/skills/prose-humanizer/` plus a command adapter in `~/.gemini/commands/` | `/prose-humanizer` |
-| Codex | `~/.agents/skills/prose-humanizer/` | `$prose-humanizer` |
+```bash
+npx skills add amanmaqsood/prose-humanizer -g
+```
+
+Install globally for every detected agent without prompts:
+
+```bash
+npx skills add amanmaqsood/prose-humanizer -g --all
+```
+
+Target particular agents:
+
+```bash
+npx skills add amanmaqsood/prose-humanizer -g -a claude-code -a codex -a gemini-cli -y
+```
+
+The skills CLI supports updates:
+
+```bash
+npx skills update prose-humanizer -g
+```
+
+## Repository installer
 
 ### Windows PowerShell
 
@@ -29,100 +47,98 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Restart Claude Code or Codex after the first installation. In Gemini CLI, run `/commands reload` or restart the CLI.
+This installs the complete skill package, including its references and optional linter, at:
 
-### Use it
+| Assistant | User-level location | Invocation |
+|---|---|---|
+| Claude Code | `~/.claude/skills/prose-humanizer/` | `/prose-humanizer` |
+| Codex | `~/.agents/skills/prose-humanizer/` | `$prose-humanizer` |
+| Gemini CLI | `~/.agents/skills/prose-humanizer/` plus `~/.gemini/commands/prose-humanizer.toml` | `/prose-humanizer` |
 
-Claude Code or Gemini CLI:
+Restart the assistant after the first installation. Gemini CLI can refresh commands with `/commands reload`.
 
-```text
-/prose-humanizer Rewrite this email in my voice. Preserve the dates, prices and links. Return only the revised email.
-```
-
-Codex:
-
-```text
-$prose-humanizer Rewrite this email in my voice. Preserve the dates, prices and links. Return only the revised email.
-```
-
-You can also attach a file, select text or refer to a draft already in the conversation.
-
-## Update
-
-Pull the newest version and rerun the same installer:
+### Update a cloned installation
 
 ```bash
 git pull
 ./install.sh
 ```
 
-On Windows, replace the second command with `./install.ps1`. The installer overwrites only Prose Humanizer's own files and the matching Gemini command adapter.
+On Windows, run `git pull` followed by `.\install.ps1`.
 
-## Manual and platform-specific installation
+## Install the optional linter command
 
-### Claude Code
-
-Personal installation:
+From the cloned repository:
 
 ```bash
-git clone https://github.com/amanmaqsood/prose-humanizer.git ~/.claude/skills/prose-humanizer
+npm install -g .
+prose-lint --help
 ```
 
-Project installation:
+Node.js 18 or newer is required only for the CLI. The writing skill itself has no Node.js dependency.
+
+To remove the CLI later:
 
 ```bash
-git clone https://github.com/amanmaqsood/prose-humanizer.git .claude/skills/prose-humanizer
+npm uninstall -g prose-humanizer
 ```
 
-Claude Code discovers personal skills in `~/.claude/skills/` and project skills in `.claude/skills/`. A skill named `prose-humanizer` can be invoked directly as `/prose-humanizer`.
+## Claude Code plugin
 
-### Gemini CLI
-
-Gemini can install the skill directly from GitHub:
-
-```bash
-gemini skills install https://github.com/amanmaqsood/prose-humanizer
-```
-
-That installs the skill, but the direct `/prose-humanizer` shortcut also needs the included file at `commands/gemini/prose-humanizer.toml` copied to:
+Claude Code can install the repository as a marketplace plugin:
 
 ```text
-~/.gemini/commands/prose-humanizer.toml
+/plugin marketplace add amanmaqsood/prose-humanizer
+/plugin install prose-humanizer@prose-humanizer
 ```
 
-The universal installer performs both steps. Run `/commands reload` after changing a custom command.
+The direct skill command remains `/prose-humanizer`.
 
-### Codex
+## Codex and ChatGPT plugin archive
 
-Ask the built-in installer:
+Each GitHub release includes `prose-humanizer-plugin-VERSION.zip`, built from the canonical root skill and validated before publishing. Use the plugin or Skills interface available to your OpenAI account.
+
+Codex can also install the repository as a normal user skill:
 
 ```text
 $skill-installer install prose-humanizer from https://github.com/amanmaqsood/prose-humanizer
 ```
 
-Or clone it for your user account:
+## ChatGPT, Claude.ai, Gemini web, and other chat products
+
+Download the complete `prose-humanizer-skill.zip` from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest). Upload it through the product's Skills interface when supported.
+
+For a one-conversation fallback, attach `SKILL.md` together with the `references/` files. The complete ZIP is preferred because advanced modes use the evaluation, pattern, and file-safety references.
+
+Personal skills may need separate installation on different desktop, web, mobile, and CLI surfaces.
+
+## Manual installation
+
+Clone the complete repository into a supported user-level skills folder:
 
 ```bash
+# Claude Code
+git clone https://github.com/amanmaqsood/prose-humanizer.git ~/.claude/skills/prose-humanizer
+
+# Codex and compatible Agent Skills clients
 git clone https://github.com/amanmaqsood/prose-humanizer.git ~/.agents/skills/prose-humanizer
 ```
 
-Codex's explicit skill syntax uses `$prose-humanizer`. You can also let Codex select the skill automatically when the request matches its description.
+Do not copy only `SKILL.md` for a permanent installation. The current skill routes to files in `references/`, and the CLI uses `rules/`.
 
-## ChatGPT and Claude.ai
+## Removal
 
-Web and desktop products manage reusable skills through their own interfaces rather than the local CLI folders above.
+The skills CLI can remove its installation:
 
-- In ChatGPT, use the Skills area when it is available for your account, or attach `SKILL.md` to a conversation.
-- In Claude.ai, download `prose-humanizer.zip` from the [latest release](https://github.com/amanmaqsood/prose-humanizer/releases/latest) and upload it as a custom Skill on supported plans.
+```bash
+npx skills remove prose-humanizer -g
+```
 
-Personal Skills may need to be installed separately on different product surfaces. File upload is still useful here, but it is no longer the primary setup for local assistants.
+For a manual or repository-script installation, remove only the explicit `prose-humanizer` folder from the assistant's user-level skills directory and remove `~/.gemini/commands/prose-humanizer.toml` if present. Review each resolved path before deleting it.
 
-## Other assistants
+## Primary references
 
-If an assistant supports the Agent Skills format, point its installer or user-level skills directory at this repository. Otherwise, add `SKILL.md` to its reusable instructions or prompt library.
-
-Current primary references:
-
+- [Open skills CLI](https://github.com/vercel-labs/skills)
 - [Claude Code skills](https://code.claude.com/docs/en/skills)
 - [Gemini CLI Agent Skills](https://geminicli.com/docs/cli/using-agent-skills/)
 - [Gemini CLI custom commands](https://geminicli.com/docs/cli/custom-commands/)

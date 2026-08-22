@@ -1,0 +1,46 @@
+{
+  "name": "prose-humanizer",
+  "version": "3.0.0",
+  "description": "Draft, rewrite, voice-match, and audit prose while preserving evidence and the writer's identity.",
+  "author": {
+    "name": "Aman Maqsood",
+    "url": "https://github.com/amanmaqsood"
+  },
+  "homepage": "https://github.com/amanmaqsood/prose-humanizer",
+  "repository": "https://github.com/amanmaqsood/prose-humanizer",
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "editing",
+    "voice",
+    "prose",
+    "humanize",
+    "audit"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Prose Humanizer",
+    "shortDescription": "Specific, truthful writing in your voice",
+    "longDescription": "Draft, rewrite, voice-match, or audit prose without inventing facts or flattening the writer. Prose Humanizer removes recurring generic patterns, preserves evidence, supports file-safe editing, and includes an optional transparent pattern linter that never guesses authorship.",
+    "developerName": "Aman Maqsood",
+    "category": "Productivity",
+    "capabilities": [
+      "Draft",
+      "Edit",
+      "Detect",
+      "Preserve voice"
+    ],
+    "websiteURL": "https://github.com/amanmaqsood/prose-humanizer",
+    "privacyPolicyURL": "https://github.com/amanmaqsood/prose-humanizer/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/amanmaqsood/prose-humanizer/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Rewrite this draft in my voice without adding any unsupported claim",
+      "Audit this draft for named generic-writing patterns without rewriting it",
+      "Turn these notes into a specific article using only the supplied evidence"
+    ],
+    "brandColor": "#D4653D",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg",
+    "screenshots": []
+  }
+}

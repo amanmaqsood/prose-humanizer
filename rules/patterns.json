@@ -1,0 +1,233 @@
+{
+  "version": "1.0.0",
+  "purpose": "Explainable prose-pattern linting. Findings describe review signals, not authorship.",
+  "patterns": [
+    {
+      "id": "tier1-vocabulary",
+      "label": "Tier-1 vocabulary",
+      "category": "language",
+      "weight": 4,
+      "kind": "word",
+      "values": [
+        "delve", "leverage", "underscore", "harness", "foster", "utilize",
+        "facilitate", "streamline", "bolster", "illuminate", "showcase", "embark",
+        "elevate", "empower", "unleash", "uncover", "optimize", "garner",
+        "elucidate", "transcend", "reimagine", "intertwine", "entwine", "espouse",
+        "exemplify", "underpin", "tapestry", "realm", "paradigm", "synergy",
+        "testament", "beacon", "interplay", "intricacies", "kaleidoscope", "tempest",
+        "whimsy", "myriad", "plethora", "pivotal", "seamless", "robust", "vibrant",
+        "meticulous", "nuanced", "transformative", "groundbreaking", "unparalleled",
+        "multifaceted", "commendable", "indelible", "poignant", "unwavering",
+        "timeless"
+      ],
+      "suggestion": "Replace the inflated word with the concrete fact, action, or consequence."
+    },
+    {
+      "id": "significance-inflation",
+      "label": "Significance inflation",
+      "category": "structure",
+      "weight": 5,
+      "kind": "phrase",
+      "values": [
+        "serves as a testament", "stands as a testament", "plays a pivotal role",
+        "plays a crucial role", "marks a pivotal moment", "paving the way for",
+        "rich cultural heritage", "enduring legacy"
+      ],
+      "suggestion": "State what happened and let the evidence establish its importance."
+    },
+    {
+      "id": "filler-phrase",
+      "label": "Filler phrase",
+      "category": "filler",
+      "weight": 2,
+      "kind": "phrase",
+      "values": [
+        "in order to", "due to the fact that", "at this point in time",
+        "in the event that", "it is important to note that", "it is worth noting that",
+        "when it comes to", "at the end of the day"
+      ],
+      "suggestion": "Delete the setup or use the shorter direct construction."
+    },
+    {
+      "id": "copula-avoidance",
+      "label": "Copula avoidance",
+      "category": "language",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:serves|stands) as\\b", "\\bboasts (?:a|an|over|more than)\\b"],
+      "suggestion": "Use is, has, or the precise action when it is clearer."
+    },
+    {
+      "id": "participial-tail",
+      "label": "Superficial -ing tail",
+      "category": "structure",
+      "weight": 4,
+      "kind": "regex",
+      "values": [",\\s+(?:highlighting|underscoring|showcasing|reflecting|symbolizing|fostering|ensuring)\\b"],
+      "suggestion": "Remove the tail or turn it into a supported independent claim."
+    },
+    {
+      "id": "negative-parallelism",
+      "label": "Negative parallelism",
+      "category": "rhetoric",
+      "weight": 4,
+      "kind": "regex",
+      "values": ["\\bnot only\\b.{0,100}\\bbut also\\b", "\\b(?:it is|it's) not\\b.{0,100}\\b(?:it is|it's)\\b", "\\bnot a\\b.{0,60}\\bnot a\\b"],
+      "suggestion": "State the positive claim directly and keep only a necessary contrast."
+    },
+    {
+      "id": "rhetorical-question-answer",
+      "label": "Rhetorical question and answer",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:the result|the reason|the answer|why does this matter)\\?\\s+\\S"],
+      "suggestion": "State the answer directly unless the reader would genuinely ask the question."
+    },
+    {
+      "id": "false-suspense",
+      "label": "False suspense",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "phrase",
+      "values": ["here's the kicker", "here is the kicker", "here's where it gets interesting", "the best part is"],
+      "suggestion": "Deliver the information without a drumroll."
+    },
+    {
+      "id": "fake-candid-opener",
+      "label": "Fake-candid opener",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["^\\s*(?:honestly\\?|look[,.:]|here(?:'s| is) the thing[:,]?)"],
+      "suggestion": "Remove the staged pause and state the point."
+    },
+    {
+      "id": "imaginary-objection",
+      "label": "Objection nobody raised",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:some might (?:say|argue)|you could argue|don't get me wrong|i'm not (?:saying|arguing)|to be clear)\\b"],
+      "suggestion": "Keep a sourced or developed objection; otherwise state the claim directly."
+    },
+    {
+      "id": "fake-alternative",
+      "label": "Rejected fake alternative",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:a tempting (?:option|approach)|one might be tempted|you might think|it would be easy to)\\b"],
+      "suggestion": "Remove the abandoned drafting option and explain the real constraint."
+    },
+    {
+      "id": "colon-reveal",
+      "label": "Dramatic colon reveal",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:the best part|the key|the detail|the result|the twist):\\s+[a-z]"],
+      "suggestion": "Rewrite the reveal as a direct sentence."
+    },
+    {
+      "id": "false-agency",
+      "label": "False agency",
+      "category": "clarity",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:the )?(?:decision|complaint|culture|market|data)\\s+(?:emerged|becomes|shifts|rewards|tells us)\\b"],
+      "suggestion": "Name the person, team, system, or event responsible for the action."
+    },
+    {
+      "id": "aphorism-formula",
+      "label": "Formulaic saying",
+      "category": "rhetoric",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b\\w+\\s+is the (?:language|currency|architecture|engine|mirror) of\\b"],
+      "suggestion": "Replace the saying with the specific mechanism or consequence."
+    },
+    {
+      "id": "vague-attribution",
+      "label": "Vague attribution",
+      "category": "evidence",
+      "weight": 5,
+      "kind": "regex",
+      "values": ["\\b(?:experts|observers|studies|industry reports|many)\\s+(?:say|argue|believe|show|suggest|note)\\b"],
+      "suggestion": "Name and cite the source, own the opinion, or remove the claim."
+    },
+    {
+      "id": "hedge-stack",
+      "label": "Stacked hedges",
+      "category": "clarity",
+      "weight": 3,
+      "kind": "regex",
+      "values": ["\\b(?:could|may|might|possibly|potentially|arguably)(?:\\s+\\w+){0,3}\\s+(?:could|may|might|possibly|potentially|arguably)\\b"],
+      "suggestion": "Keep the one qualifier that represents real uncertainty."
+    },
+    {
+      "id": "prompt-echo",
+      "label": "Prompt echo or announcement",
+      "category": "communication",
+      "weight": 3,
+      "kind": "phrase",
+      "values": ["this essay will explore", "this article will explore", "let's dive into", "let us dive into", "here's what you need to know", "without further ado"],
+      "suggestion": "Begin with the subject instead of announcing the document."
+    },
+    {
+      "id": "chatbot-artifact",
+      "label": "Chatbot artifact",
+      "category": "communication",
+      "weight": 5,
+      "kind": "phrase",
+      "values": ["i hope this helps", "would you like me to", "let me know if you'd like", "of course!", "certainly!"],
+      "suggestion": "Remove assistant scaffolding from the deliverable."
+    },
+    {
+      "id": "knowledge-disclaimer",
+      "label": "Knowledge-limit disclaimer",
+      "category": "communication",
+      "weight": 5,
+      "kind": "phrase",
+      "values": ["as of my last training update", "based on available information", "while specific details are limited"],
+      "suggestion": "State what is known, identify the source boundary, or omit the unsupported passage."
+    },
+    {
+      "id": "generic-ending",
+      "label": "Generic concluding uplift",
+      "category": "ending",
+      "weight": 4,
+      "kind": "phrase",
+      "values": ["in conclusion", "the future looks bright", "exciting times lie ahead", "the possibilities are endless", "only time will tell", "moving forward"],
+      "suggestion": "End on the last supported fact, consequence, choice, or next action."
+    },
+    {
+      "id": "decorative-formatting",
+      "label": "Decorative formatting",
+      "category": "format",
+      "weight": 2,
+      "kind": "regex",
+      "values": ["^\\s*[-*]\\s+\\*\\*[^*]+:\\*\\*", "(?:#\\w+\\s*){3,}$"],
+      "suggestion": "Use formatting only when it helps the destination and reader scan the content."
+    },
+    {
+      "id": "dash-cluster",
+      "label": "Dash cluster",
+      "category": "punctuation",
+      "weight": 2,
+      "kind": "regex",
+      "values": ["—[^—\\n]*—"],
+      "suggestion": "Keep a demonstrated dash habit, but replace decorative clusters with ordinary punctuation."
+    }
+  ],
+  "safeFixes": [
+    { "match": "in order to", "replacement": "to" },
+    { "match": "due to the fact that", "replacement": "because" },
+    { "match": "at this point in time", "replacement": "now" },
+    { "match": "in the event that", "replacement": "if" },
+    { "match": "has the ability to", "replacement": "can" },
+    { "match": "have the ability to", "replacement": "can" },
+    { "match": "it is important to note that ", "replacement": "" },
+    { "match": "it is worth noting that ", "replacement": "" }
+  ]
+}

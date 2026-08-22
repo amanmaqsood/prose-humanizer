@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -eu
+
+threshold=${PROSE_LINT_THRESHOLD:-70}
+root=$(git rev-parse --show-toplevel)
+
+git diff --cached --name-only --diff-filter=ACMR | while IFS= read -r file; do
+  case "$file" in
+    *.md|*.mdx|*.txt|*.rst)
+      if [ -f "$root/$file" ]; then
+        node "$root/bin/prose-lint.js" score "$root/$file" --fail-above "$threshold"
+      fi
+      ;;
+  esac
+done

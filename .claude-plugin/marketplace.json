@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "prose-humanizer",
+  "owner": {
+    "name": "Aman Maqsood",
+    "url": "https://github.com/amanmaqsood"
+  },
+  "description": "Install Prose Humanizer as a Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "prose-humanizer",
+      "source": "./",
+      "description": "Draft, rewrite, voice-match, and audit prose while preserving evidence and voice.",
+      "license": "MIT",
+      "keywords": ["writing", "editing", "voice", "humanize", "prose", "audit"]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "prose-humanizer",
+  "version": "3.0.0",
+  "description": "Humanize prose and lint recurring AI-style writing patterns without guessing authorship.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amanmaqsood/prose-humanizer.git"
+  },
+  "homepage": "https://github.com/amanmaqsood/prose-humanizer#readme",
+  "bugs": "https://github.com/amanmaqsood/prose-humanizer/issues",
+  "type": "commonjs",
+  "bin": {
+    "prose-lint": "bin/prose-lint.js",
+    "prose-humanizer": "bin/prose-lint.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "validate": "python scripts/validate_skill.py && npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "writing",
+    "editing",
+    "humanize",
+    "prose",
+    "lint",
+    "agent-skill"
+  ],
+  "files": [
+    "SKILL.md",
+    "agents/",
+    "assets/",
+    "bin/",
+    "evals/",
+    "references/",
+    "rules/",
+    "LICENSE"
+  ]
+}
