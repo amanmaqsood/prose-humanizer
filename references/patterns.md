@@ -40,6 +40,8 @@ Preserve specific odd details, mixed feelings, era-bound references, defensible 
 | Prompt echo | “This article will explore...” | Begin with the subject. |
 | Fractal summary | previews and recaps inside every section | Remove local scaffolding. |
 | Generic uplift | conclusion recap, bright-future promise, or pep talk | End on the last earned fact or next action. |
+| Hollow content | topical nouns arranged around no testable or paraphrasable claim | State the actual claim, mechanism, evidence, or decision; otherwise cut it. |
+| Humanizer signature | every edit gains the same fragments, asides, contractions, blunt opener, or “honestly” beat | Use only features evidenced for this writer and channel. |
 
 ## Rhythm and sentence patterns
 
@@ -79,4 +81,46 @@ Remove assistant scaffolding, question restatements, knowledge-cutoff boilerplat
 
 Formatting is not personality. Decorative bold labels, emoji bullets, hashtag stacks, excessive micro-headings, and repeated title-case sections usually need reduction. Preserve formatting required by the user, publication, accessibility needs, or house style.
 
+## Channel checks
+
+- **Email:** preserve the actual relationship, request, deadline, greeting, and sign-off. Direct does not mean abrupt.
+- **Social:** respect character limits, platform syntax, mentions, and the writer’s demonstrated use of hashtags or line breaks. Do not manufacture engagement bait.
+- **Documentation and technical prose:** preserve repeated terms, commands, literals, and stable current-state descriptions. Variation is not worth ambiguity.
+- **Academic prose:** retain calibrated claims, field terminology, citations, and legitimate signposting. Do not simplify away method or limitation.
+- **Marketing:** require evidence for comparisons, rankings, performance, adoption, and customer outcomes.
+- **Fiction:** treat dialogue, repetition, metaphor, viewpoint, and genre conventions as authored choices rather than default lint findings.
+
+## Stop condition
+
+Stop editing when the piece is specific, supported, clear for its channel, and consistent with the strongest available voice evidence. A residual watched word, polished sentence, or uneven paragraph is not a reason to continue. Repeatedly applying the same “human” moves creates another template.
+
 The machine-readable catalog used by `prose-lint` lives in `rules/patterns.json`. It intentionally covers only patterns that can be reported transparently and leaves contextual judgment to the editor.
+
+## CLI rule map
+
+These IDs keep automated findings tied to this contextual guidance:
+
+| Rule ID | Review signal |
+|---|---|
+| `tier1-vocabulary` | Inflated vocabulary from the exclusion list |
+| `significance-inflation` | Unsupported importance or legacy framing |
+| `filler-phrase` | Removable setup that delays the claim |
+| `copula-avoidance` | Inflated substitutes for is or has |
+| `participial-tail` | Superficial trailing analysis |
+| `negative-parallelism` | Formulaic rejected contrast |
+| `rhetorical-question-answer` | Question immediately answered for effect |
+| `false-suspense` | A drumroll before ordinary information |
+| `fake-candid-opener` | Staged honesty or conversational pause |
+| `imaginary-objection` | An undeveloped objection nobody raised |
+| `fake-alternative` | A choice introduced only to reject it |
+| `colon-reveal` | A dramatic label-and-reveal construction |
+| `false-agency` | An action with the real actor hidden |
+| `aphorism-formula` | A prefabricated metaphorical saying |
+| `vague-attribution` | An unnamed source presented as authority |
+| `hedge-stack` | Multiple qualifiers doing one job |
+| `prompt-echo` | An announcement of what the text will do |
+| `chatbot-artifact` | Assistant scaffolding left in the artifact |
+| `knowledge-disclaimer` | Generic training or knowledge-limit boilerplate |
+| `generic-ending` | Recap, uplift, or empty future promise |
+| `decorative-formatting` | Formatting that adds ceremony, not navigation |
+| `dash-cluster` | Repeated decorative dash framing |

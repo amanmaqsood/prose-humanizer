@@ -1,6 +1,6 @@
 {
   "name": "prose-humanizer",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Draft, rewrite, voice-match, and audit prose while preserving evidence and the writer's identity.",
   "author": {
     "name": "Aman Maqsood",

@@ -7,6 +7,7 @@ const test = require("node:test");
 
 const root = path.resolve(__dirname, "..");
 const cli = path.join(root, "bin", "prose-lint.js");
+const packageVersion = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")).version;
 
 function run(args, input = "") {
   return spawnSync(process.execPath, [cli, ...args], {
@@ -64,9 +65,26 @@ test("score reports pattern density without claiming authorship", () => {
   const cleanReport = JSON.parse(clean.stdout);
   assert.equal(flaggedReport.kind, "pattern-density");
   assert.equal(flaggedReport.authorshipClaim, false);
+  assert.equal(flaggedReport.deprecated, true);
+  assert.match(flaggedReport.warning, /uncalibrated/i);
   assert.equal(flaggedReport.confidence, "low");
   assert.ok(flaggedReport.score > cleanReport.score);
   assert.equal(cleanReport.score, 0);
+});
+
+test("report is the recommended uncalibrated review interface", () => {
+  const result = run(
+    ["report", "-", "--json"],
+    "This pivotal release serves as a testament to progress.",
+  );
+
+  assert.equal(result.status, 0, result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.kind, "prose-review");
+  assert.equal(report.authorshipClaim, false);
+  assert.equal(report.calibration, "uncalibrated-review-signal");
+  assert.ok(report.findings.length > 0);
+  assert.ok(report.findings.every((finding) => finding.start < finding.end));
 });
 
 test("score can enforce a lint threshold for one file", () => {
@@ -95,7 +113,7 @@ test("threshold flags require a numeric value", () => {
   const result = run(["score", "-", "--fail-above"], "Plain prose.\n");
 
   assert.equal(result.status, 2);
-  assert.match(result.stderr, /--fail-above must be a number from 0 to 100/);
+  assert.match(result.stderr, /--fail-above requires a value/);
 });
 
 test("score excludes protected metadata and code from its denominator", () => {
@@ -157,6 +175,55 @@ test("fix preserves metadata, code, quotations, and inline code", () => {
   );
 });
 
+test("fix preserves inline quotations, MDX properties, and phrase boundaries", () => {
+  const input = [
+    'She wrote, "in order to keep this exact".',
+    "She added, 'in order to keep this exact'.",
+    "<Card",
+    "  onClick={() => run()}",
+    "  pivotal",
+    '  title="in order to ship"',
+    ">",
+    "In order to continue, read this.",
+    "</Card>",
+    "She put the files in order together with Lee.",
+  ].join("\n");
+  const result = run(["fix", "-"], input);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout, input.replace("In order to continue", "To continue"));
+});
+
+test("fix skips non-English and high-stakes configured content", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-fix-gates-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const file = path.join(directory, "draft.md");
+  fs.writeFileSync(file, "In order to preserve this wording.\n");
+  for (const config of [
+    { version: 1, language: "es" },
+    { version: 1, language: "en", channel: "legal" },
+    { version: 1, language: "en", channel: "medical" },
+  ]) {
+    fs.writeFileSync(path.join(directory, ".prose-humanizer.json"), JSON.stringify(config));
+    const result = run(["fix", file]);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, "In order to preserve this wording.\n");
+  }
+});
+
+test("analyze explicitly reports a non-English skip", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-language-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const config = path.join(directory, ".prose-humanizer.json");
+  fs.writeFileSync(config, JSON.stringify({ version: 1, language: "es" }));
+  const result = run(["analyze", "-", "--config", config, "--json"], "Un texto pivotal.\n");
+
+  assert.equal(result.status, 0, result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.match(report.skippedReason, /not English/i);
+  assert.deepEqual(report.findings, []);
+});
+
 test("stats reports rhythm and repetition measurements", () => {
   const result = run(
     ["stats", "-", "--json"],
@@ -190,11 +257,108 @@ test("scan ranks prose files and can fail a CI threshold", (context) => {
 
   assert.equal(result.status, 1, result.stderr);
   const report = JSON.parse(result.stdout);
-  assert.equal(report.kind, "repository-scan");
+  assert.equal(report.kind, "repository-review");
   assert.equal(report.files.length, 2);
   assert.equal(report.files[0].path, "flagged.md");
-  assert.ok(report.files[0].score > report.files[1].score);
+  assert.ok(report.files[0].weightedDensityPer100Words > report.files[1].weightedDensityPer100Words);
   assert.equal(report.thresholdExceeded, true);
+});
+
+test("scan uses strict project config for exclusions and thresholds", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-config-scan-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(directory, "generated"));
+  fs.writeFileSync(path.join(directory, "draft.md"), "This pivotal update shipped.\n");
+  fs.writeFileSync(path.join(directory, "generated", "copy.md"), "Pivotal pivotal pivotal.\n");
+  fs.writeFileSync(path.join(directory, ".prose-humanizer.json"), JSON.stringify({
+    version: 1,
+    language: "en",
+    threshold: 1,
+    exclude: ["generated/**"],
+  }));
+
+  const result = run(["scan", directory, "--json"]);
+
+  assert.equal(result.status, 1, result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.deepEqual(report.files.map((file) => file.path), ["draft.md"]);
+  assert.equal(report.threshold, 1);
+  assert.equal(report.thresholdSource, "config");
+});
+
+test("profile emits privacy-safe feature evidence from deliberate samples", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-profile-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const first = path.join(directory, "first.txt");
+  const second = path.join(directory, "second.txt");
+  fs.writeFileSync(first, "I tried it. Honestly, it was fine.\n");
+  fs.writeFileSync(second, "Would I use it again? Probably.\n");
+
+  const result = run(["profile", first, second, "--json", "--sample-type", "typed"]);
+
+  assert.equal(result.status, 0, result.stderr);
+  const profile = JSON.parse(result.stdout);
+  assert.equal(profile.sources.length, 2);
+  assert.ok(profile.features.sentenceLengthMean.confidence);
+  assert.doesNotMatch(result.stdout, /Honestly, it was fine/);
+});
+
+test("profile accepts per-file provenance and a non-English language", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-profile-types-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const first = path.join(directory, "first.txt");
+  const second = path.join(directory, "second.txt");
+  fs.writeFileSync(first, "Escribo directo.\n");
+  fs.writeFileSync(second, "No quiero adornos.\n");
+  const result = run([
+    "profile", first, second, "--json", "--sample-types", "typed,translated", "--language", "es",
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+  const profile = JSON.parse(result.stdout);
+  assert.deepEqual(profile.sources.map((source) => source.type), ["typed", "translated"]);
+  assert.equal(profile.language, "es");
+  assert.equal(Object.hasOwn(profile.features, "firstPersonRatePer100Words"), false);
+});
+
+test("named-file commands honor project exclusions through stdin paths", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-excluded-file-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const nested = path.join(directory, "generated");
+  fs.mkdirSync(nested);
+  const virtual = path.join(nested, "copy.md");
+  fs.writeFileSync(path.join(directory, ".prose-humanizer.json"), JSON.stringify({
+    version: 1, exclude: ["generated/**"],
+  }));
+  const result = run(
+    ["report", "-", "--stdin-path", virtual, "--config", path.join(directory, ".prose-humanizer.json"), "--json"],
+    "This pivotal copy serves as a testament to progress.\n",
+  );
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(JSON.parse(result.stdout).kind, "skipped");
+});
+
+test("fix preserves a UTF-8 BOM and refuses invalid UTF-8", (context) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "prose-encoding-"));
+  context.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const bomFile = path.join(directory, "bom.md");
+  fs.writeFileSync(bomFile, Buffer.concat([
+    Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from("In order to ship.\r\n", "utf8"),
+  ]));
+  const bomResult = run(["fix", bomFile, "--write"]);
+  assert.equal(bomResult.status, 0, bomResult.stderr);
+  const after = fs.readFileSync(bomFile);
+  assert.deepEqual([...after.subarray(0, 3)], [0xef, 0xbb, 0xbf]);
+  assert.match(after.toString("utf8"), /To ship\.\r\n/);
+
+  const invalidFile = path.join(directory, "invalid.md");
+  const original = Buffer.from([0xff, 0xfe, 0x49, 0x00]);
+  fs.writeFileSync(invalidFile, original);
+  const invalidResult = run(["fix", invalidFile, "--write"]);
+  assert.equal(invalidResult.status, 2);
+  assert.match(invalidResult.stderr, /not valid UTF-8/i);
+  assert.deepEqual(fs.readFileSync(invalidFile), original);
 });
 
 test("fix --write updates a named file and reports the change", (context) => {
@@ -234,9 +398,11 @@ test("help and version describe the public CLI", () => {
   assert.equal(help.status, 0, help.stderr);
   assert.match(help.stdout, /analyze/);
   assert.match(help.stdout, /scan/);
+  assert.match(help.stdout, /report/);
+  assert.match(help.stdout, /profile/);
   assert.match(help.stdout, /not an authorship detector/i);
   assert.equal(version.status, 0, version.stderr);
-  assert.equal(version.stdout.trim(), "3.0.0");
+  assert.equal(version.stdout.trim(), packageVersion);
 });
 
 test("missing paths fail cleanly without a stack trace", () => {

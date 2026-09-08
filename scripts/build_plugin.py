@@ -14,8 +14,8 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / ".codex-plugin" / "plugin.json"
 PACKAGE = ROOT / "package.json"
-SKILL_FILES = ("SKILL.md", "package.json", "LICENSE")
-SKILL_DIRECTORIES = ("agents", "assets", "bin", "evals", "references", "rules")
+SKILL_FILES = ("SKILL.md", "package.json", "LICENSE", ".prose-humanizer.example.json")
+SKILL_DIRECTORIES = ("agents", "assets", "bin", "evals", "lib", "references", "rules", "schemas", "scripts")
 
 
 def parse_args() -> argparse.Namespace:
@@ -42,7 +42,11 @@ def copy_skill(skill_root: Path) -> None:
     for filename in SKILL_FILES:
         shutil.copy2(ROOT / filename, skill_root / filename)
     for directory in SKILL_DIRECTORIES:
-        shutil.copytree(ROOT / directory, skill_root / directory)
+        shutil.copytree(
+            ROOT / directory,
+            skill_root / directory,
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+        )
 
 
 def build(output: Path, manifest: dict) -> Path:
@@ -88,7 +92,7 @@ def build_skill_archive(output: Path) -> Path:
             package.write(ROOT / filename, filename)
         for directory in SKILL_DIRECTORIES:
             for file in sorted((ROOT / directory).rglob("*")):
-                if file.is_file():
+                if file.is_file() and "__pycache__" not in file.parts and file.suffix != ".pyc":
                     package.write(file, file.relative_to(ROOT))
     return archive
 
@@ -98,7 +102,10 @@ def validate_skill_archive(archive: Path) -> None:
         raise SystemExit("Skill output is not a valid ZIP archive")
     with zipfile.ZipFile(archive) as package:
         names = set(package.namelist())
-        required = {"SKILL.md", "references/eval.md", "rules/patterns.json"}
+        required = {
+            "SKILL.md", "references/eval.md", "rules/patterns.json",
+            "lib/prose-core.js", "schemas/voice-profile.schema.json",
+        }
         if not required.issubset(names):
             raise SystemExit("Skill output is incomplete")
         packaged_skill = package.read("SKILL.md")

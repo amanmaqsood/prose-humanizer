@@ -1,10 +1,10 @@
 interface:
   display_name: "Prose Humanizer"
-  short_description: "Humanize prose without inventing details"
+  short_description: "Truthful, natural prose in the writer's voice"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#D4653D"
-  default_prompt: "Use $prose-humanizer to draft, rewrite, voice-match, or audit this prose while preserving every supported fact and following the requested output contract."
+  default_prompt: "Use $prose-humanizer to draft, rewrite, voice-match, or audit this prose. Preserve supported facts, uncertainty, authorial choices, and the requested output contract."
 
 policy:
   allow_implicit_invocation: true

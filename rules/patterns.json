@@ -7,6 +7,7 @@
       "label": "Tier-1 vocabulary",
       "category": "language",
       "weight": 4,
+      "defaultSeverity": "info",
       "kind": "word",
       "values": [
         "delve", "leverage", "underscore", "harness", "foster", "utilize",

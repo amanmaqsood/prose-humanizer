@@ -40,7 +40,8 @@ class PluginPackageTests(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stderr)
 
-            archive = Path(directory) / "prose-humanizer-plugin-3.0.0.zip"
+            package_version = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))["version"]
+            archive = Path(directory) / f"prose-humanizer-plugin-{package_version}.zip"
             self.assertTrue(zipfile.is_zipfile(archive))
             with zipfile.ZipFile(archive) as package:
                 names = set(package.namelist())
@@ -53,6 +54,11 @@ class PluginPackageTests(unittest.TestCase):
                     "prose-humanizer/skills/prose-humanizer/rules/patterns.json",
                     "prose-humanizer/skills/prose-humanizer/bin/prose-lint.js",
                     "prose-humanizer/skills/prose-humanizer/evals/cases.json",
+                    "prose-humanizer/skills/prose-humanizer/evals/benchmark.json",
+                    "prose-humanizer/skills/prose-humanizer/lib/prose-core.js",
+                    "prose-humanizer/skills/prose-humanizer/schemas/prose-humanizer.schema.json",
+                    "prose-humanizer/skills/prose-humanizer/schemas/voice-profile.schema.json",
+                    "prose-humanizer/skills/prose-humanizer/scripts/run_benchmark.js",
                     "prose-humanizer/skills/prose-humanizer/package.json",
                     "prose-humanizer/assets/icon.svg",
                     "prose-humanizer/LICENSE",
@@ -62,7 +68,7 @@ class PluginPackageTests(unittest.TestCase):
                 manifest = json.loads(
                     package.read("prose-humanizer/.codex-plugin/plugin.json")
                 )
-                self.assertEqual(manifest["version"], "3.0.0")
+                self.assertEqual(manifest["version"], package_version)
                 self.assertEqual(manifest["skills"], "./skills/")
 
                 packaged_skill = package.read(
@@ -79,9 +85,14 @@ class PluginPackageTests(unittest.TestCase):
                     "agents/openai.yaml",
                     "assets/icon.svg",
                     "bin/prose-lint.js",
+                    "evals/benchmark.json",
                     "evals/cases.json",
+                    "lib/prose-core.js",
                     "references/eval.md",
                     "rules/patterns.json",
+                    "schemas/prose-humanizer.schema.json",
+                    "schemas/voice-profile.schema.json",
+                    "scripts/run_benchmark.js",
                 }.issubset(names))
                 self.assertEqual(package.read("SKILL.md"), (ROOT / "SKILL.md").read_bytes())
 

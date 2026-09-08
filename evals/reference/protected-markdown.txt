@@ -1,0 +1,7 @@
+---
+title: A pivotal guide
+---
+To run the tool, use [the pivotal command](https://example.com/pivotal).
+```sh
+prose-lint report draft.md
+```

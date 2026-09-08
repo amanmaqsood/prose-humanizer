@@ -1,0 +1,1 @@
+I’m not fixing what isn’t broken. The checkout works fine; the receipt emails don’t.

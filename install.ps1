@@ -29,15 +29,17 @@ function Copy-SkillFile {
 function Copy-SkillPackage {
     param([Parameter(Mandatory)] [string]$Destination)
 
-    foreach ($filename in @("SKILL.md", "package.json", "LICENSE")) {
+    foreach ($filename in @("SKILL.md", "package.json", "LICENSE", ".prose-humanizer.example.json")) {
         Copy-SkillFile -Source (Join-Path $sourceRoot $filename) -Destination (Join-Path $Destination $filename)
     }
-    foreach ($directory in @("agents", "assets", "bin", "evals", "references", "rules")) {
+    foreach ($directory in @("agents", "assets", "bin", "evals", "lib", "references", "rules", "schemas", "scripts")) {
         $sourceDirectory = Join-Path $sourceRoot $directory
-        Get-ChildItem -LiteralPath $sourceDirectory -File -Recurse | ForEach-Object {
+        Get-ChildItem -LiteralPath $sourceDirectory -File -Recurse |
+            Where-Object { $_.Extension -ne ".pyc" -and $_.FullName -notmatch "[\\/]__pycache__[\\/]" } |
+            ForEach-Object {
             $relativePath = [System.IO.Path]::GetRelativePath($sourceRoot, $_.FullName)
             Copy-SkillFile -Source $_.FullName -Destination (Join-Path $Destination $relativePath)
-        }
+            }
     }
 }
 

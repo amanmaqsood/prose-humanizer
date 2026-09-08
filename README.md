@@ -7,56 +7,59 @@
 </p>
 
 <p align="center">
-  Draft · Rewrite · Voice match · Detect · File-safe editing · Repository linting
+  Draft · Rewrite · Voice match · Audit · File-safe editing · Repository linting
 </p>
 
 <p align="center">
   <a href="https://github.com/amanmaqsood/prose-humanizer/actions/workflows/validate.yml"><img src="https://github.com/amanmaqsood/prose-humanizer/actions/workflows/validate.yml/badge.svg" alt="Validate skill"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-172033.svg" alt="MIT License"></a>
+  <a href="https://github.com/amanmaqsood/prose-humanizer/releases/latest"><img src="https://img.shields.io/github/v/release/amanmaqsood/prose-humanizer" alt="Latest release"></a>
   <a href="https://github.com/amanmaqsood/prose-humanizer/stargazers"><img src="https://img.shields.io/github/stars/amanmaqsood/prose-humanizer?style=social" alt="GitHub stars"></a>
 </p>
 
-## What is Prose Humanizer?
+## What it is
 
-Prose Humanizer is a portable Agent Skill and optional pattern-lint CLI for people who want writing that sounds authored rather than generated from a template.
+Prose Humanizer is a portable Agent Skill for drafting and editing prose that sounds authored because it is grounded in real evidence and a real voice. It works with Claude, Codex, Gemini CLI, Cursor, and other clients that support Agent Skills. The optional local CLI audits recurring writing patterns without guessing whether a person or model wrote the text.
 
 It can:
 
-- draft from notes, sources, facts, and voice samples;
-- rewrite with the minimum effective edit;
-- match a writer without copying memorable phrases;
-- audit named writing patterns without rewriting or guessing authorship;
-- protect facts, code, frontmatter, quotations, data, and link targets;
-- scan documentation repositories with explainable line-number findings.
+- draft articles, posts, emails, scripts, reports, documentation, and other prose;
+- rewrite with the minimum effective edit instead of flattening the writer;
+- match a voice without copying sample facts or memorable phrases;
+- preserve uncertainty, defined terms, chronology, causality, citations, and numbers;
+- protect frontmatter, code, quotations, tables, HTML, MDX, generated sections, and link destinations;
+- create privacy-safe voice profiles that retain hashes and feature evidence, not source prose;
+- scan repositories with exact positions, overlap-aware density, and configurable exclusions.
 
-Its first rule is evidence. It will not invent an anecdote, statistic, quotation, citation, narrator, cause, or conclusion to make prose feel more human.
+Its first rule is evidence. It will not invent an anecdote, statistic, quotation, citation, narrator, cause, result, or customer reaction to make prose feel more human.
 
 > [!IMPORTANT]
-> Prose Humanizer is not an AI detector and does not promise "undetectable" writing. Detector scores cannot prove authorship. Judge the result by factual fidelity, voice, specificity, clarity, and reader experience.
+> Prose Humanizer is not an AI detector and does not promise detector evasion. Detector scores do not establish authorship. Judge writing by factual fidelity, voice fit, specificity, clarity, and reader experience.
 
-## Install globally with one command
+## Install once, use anywhere
 
-The open [skills CLI](https://github.com/vercel-labs/skills) can discover this repository's root `SKILL.md` and install it for supported assistants:
+The open [skills CLI](https://github.com/vercel-labs/skills) can install the skill globally for supported assistants:
 
 ```bash
 npx skills add amanmaqsood/prose-humanizer -g
 ```
 
-The installer lets you choose Claude Code, Codex, Gemini CLI, Cursor, and many other supported agents. To skip prompts and target every detected agent:
+Install it for every detected client without prompts:
 
 ```bash
 npx skills add amanmaqsood/prose-humanizer -g --all
 ```
 
-Then invoke the skill with your assistant's native syntax:
+Then invoke it with the syntax your assistant uses:
 
-| Assistant | Command |
+| Assistant | Example |
 |---|---|
-| Claude Code | `/prose-humanizer Rewrite this draft in my voice...` |
-| Gemini CLI | `/prose-humanizer Rewrite this draft in my voice...` |
-| Codex | `$prose-humanizer Rewrite this draft in my voice...` |
+| Claude Code | `/prose-humanizer Rewrite this in my voice.` |
+| Gemini CLI | `/prose-humanizer Rewrite this in my voice.` |
+| Codex | `$prose-humanizer Rewrite this in my voice.` |
+| Other Agent Skills clients | Select or invoke `prose-humanizer` through the client interface. |
 
-Our own offline-friendly installers configure Claude Code, Gemini CLI, and Codex together:
+Repository installers configure Claude Code, Gemini CLI, and Codex together:
 
 ```powershell
 # Windows
@@ -72,14 +75,14 @@ cd prose-humanizer
 ./install.sh
 ```
 
-See [INSTALL.md](INSTALL.md) for updates, manual paths, web products, plugin archives, and removal.
+See [INSTALL.md](INSTALL.md) for updates, exact locations, plugin packages, web products, and removal.
 
 ## Use it
 
 ### Rewrite without flattening the writer
 
 ```text
-$prose-humanizer Rewrite this article with the minimum effective edit. Preserve my argument, citations, technical terms, humor, and every supported fact. Return only the article.
+$prose-humanizer Rewrite this article with the minimum effective edit. Preserve my argument, citations, technical terms, humor, uncertainty, and every supported fact. Return only the article.
 ```
 
 ### Draft from evidence
@@ -88,7 +91,13 @@ $prose-humanizer Rewrite this article with the minimum effective edit. Preserve 
 $prose-humanizer Turn these notes into a 700-word newsletter. Treat the attached posts as voice samples. Use only the supplied facts and links.
 ```
 
-### Detect without rewriting
+### Match a voice safely
+
+```text
+$prose-humanizer Use these three samples for cadence and diction, not for facts. Draft the new announcement from the supplied launch notes. Do not reuse memorable phrases.
+```
+
+### Audit without rewriting
 
 ```text
 $prose-humanizer Audit this draft. Name each generic-writing pattern, quote the shortest relevant span, and suggest the smallest fix. Do not rewrite it or guess who wrote it.
@@ -97,99 +106,99 @@ $prose-humanizer Audit this draft. Name each generic-writing pattern, quote the 
 ### Edit a file safely
 
 ```text
-$prose-humanizer Edit docs/launch.md. Preserve its frontmatter, code blocks, quoted text, data, anchors, and link destinations.
+$prose-humanizer Edit docs/launch.md. Preserve frontmatter, code, quoted text, data, anchors, generated sections, and link destinations.
 ```
 
-## The pattern-lint CLI
+## Why the workflow is different
 
-The optional CLI finds configured review signals. It reports exactly which rule matched, where it matched, and what kind of edit to consider. It never labels text as human or AI.
+The skill edits three layers in order:
 
-Install it from a clone:
+1. **Semantic content** - claims, facts, uncertainty, attribution, chronology, and causality.
+2. **Authorial decisions** - stance, emphasis, ordering, omissions, and unresolved edges.
+3. **Expression** - syntax, diction, cadence, punctuation, and formatting.
+
+It changes the lowest layer necessary. A surface rewrite cannot silently move facts or replace the writer's decisions.
+
+"Minimum effective edit" means the least change that fully satisfies the requested purpose and format. It does not excuse returning raw notes unchanged when the user asked for a release note, email, thread, or script.
+
+For voice work, explicit instructions outrank deliberate samples, which outrank a confirmed profile, the current draft, and destination defaults. Confidence is tracked per feature. Confidence in cadence does not become confidence in humor or stance. Samples are never discovered by scanning nearby folders.
+
+For difficult deep rewrites, the skill can create two candidates internally and return the one with better voice fit and less semantic movement. Ordinary work uses one restrained pass.
+
+## Optional transparent CLI
+
+Install the zero-dependency Node.js CLI from a clone:
 
 ```bash
 npm install -g .
 ```
 
-Commands:
-
 ```bash
+prose-lint report draft.md
 prose-lint analyze draft.md
-prose-lint score draft.md
 prose-lint stats draft.md --json
 prose-lint fix draft.md --write
-prose-lint scan docs/ --fail-above 70
+prose-lint scan docs/
+prose-lint profile sample-1.txt sample-2.txt --sample-types typed,ai-edited --language en --json
 ```
 
 | Command | Purpose |
 |---|---|
-| `analyze` | Named findings with line numbers, matched text, categories, and suggested edits |
-| `score` | Configured pattern density on a 0-100 lint scale, explicitly not authorship |
-| `stats` | Sentence lengths, paragraph sizes, vocabulary ratio, and repeated trigrams |
-| `fix` | Only declared meaning-preserving mechanical substitutions |
-| `scan` | Repository ranking, JSON output, and optional CI thresholds |
+| `report` | Exact findings, overlap groups, coverage, and uncalibrated density |
+| `analyze` | Human-readable findings with positions and smallest-fix guidance |
+| `stats` | Descriptive prose statistics without quality or authorship claims |
+| `fix` | Declared meaning-preserving substitutions in prose spans only |
+| `scan` | Repository review with exclusions and optional project thresholds |
+| `profile` | Hash-only source provenance and feature-level voice evidence |
+| `score` | Deprecated v3 compatibility alias, scheduled for removal in v5 |
 
-The linter ignores YAML frontmatter, fenced code, Markdown quotations, inline code, and link destinations. Short samples receive a low-confidence label. The machine-readable rules live in [rules/patterns.json](rules/patterns.json).
+The automated pattern catalog is English-only. Configure another language and pattern checks are skipped instead of applying English assumptions to it. Mechanical fixes are also disabled for non-English, legal, and medical content. The editorial skill itself preserves the input language, dialect, and code-switching.
 
-The score is transparent: `min(100, 600 × total matched-rule weight / prose word count)`. It is a review-priority signal, not a probability and not evidence of authorship.
+### Project configuration
 
-## How the editorial workflow works
+Copy [.prose-humanizer.example.json](.prose-humanizer.example.json) to `.prose-humanizer.json`, then set the language, channel, exclusions, disabled rules, severity overrides, and an optional project-specific density threshold. The schema is [schemas/prose-humanizer.schema.json](schemas/prose-humanizer.schema.json).
 
-1. Select Draft, Rewrite, Voice match, Detect, File, Repository audit, or Embedded mode.
-2. Build a source ledger of every claim, name, number, quotation, citation, link, and stated opinion.
-3. Infer the writer's voice from actual evidence.
-4. Draft from substance or make the minimum effective edit.
-5. Audit structural, lexical, rhythm, communication, and formatting patterns in context.
-6. Compare the result against the source ledger to catch omissions and inventions.
-7. Run the pass/fail editorial evaluation before returning the result.
+The CLI checks configuration next to the target and in the current working directory. It does not walk parent folders looking for hidden instructions or voice samples.
 
-The core contract is in [SKILL.md](SKILL.md). Detailed guidance is disclosed only when needed through [patterns](references/patterns.md), [file safety](references/file-safety.md), and the [editorial evaluation](references/eval.md).
+## Evaluation, not theater
 
-## Repository checks and automation
+`npm run benchmark` executes shareable fixtures across three separate axes: fidelity, restraint, and voice. The hard checks catch missing or invented literals, narrator drift, phrase leakage, changed protected spans, and excessive editing. CI runs these checks on Node.js 18, 20, and 22, plus an installed CLI smoke test on Windows.
 
-Every push and pull request verifies:
+The repository also includes a blinded pairwise [human evaluation kit](evals/HUMAN_EVALUATION.md). It keeps candidate identity separate, checks meaning first, and recommends order reversal to expose position bias.
 
-- skill structure, references, metadata, and synchronized versions;
-- CLI behavior through public-interface tests;
-- behavior-evaluation fixtures for every public mode and safety boundary;
-- plugin archive contents and canonical-file equality;
-- PowerShell and shell installer behavior;
-- npm package contents and shell syntax.
+The [v4 evaluation record](evals/RESULTS.md) also preserves a regression found during cross-version testing, the fix, and the limited post-fix outcome instead of presenting a polished-only success story.
 
-An optional pre-commit check is included:
+The bundled benchmark does **not** measure human preference, universal writing quality, or detector performance. Its reports say so. That limitation is part of the test contract, not a footnote.
 
-```bash
-./scripts/install-git-hook.sh
-```
-
-Set `PROSE_LINT_THRESHOLD` to change its default threshold of 70.
-
-## Principles
+## Design principles
 
 **Truth beats texture.** A believable invention is still an error.
 
-**Voice is evidence.** Real samples outrank a generic idea of what human writing sounds like.
+**Voice is evidence.** Relevant samples outrank a generic idea of human writing.
 
-**Edit proportionally.** Leave good human sentences alone.
+**Edit proportionally.** Leave effective, distinctive sentences alone.
 
 **Patterns need context.** One watched word or punctuation mark proves nothing.
 
-**Variation needs a reason.** Random mistakes and forced fragments create another artificial fingerprint.
+**Dialect is not a defect.** Do not anglicize, standardize, or stereotype a speaker.
 
-**Transparent tools beat mystery scores.** Every CLI point traces back to a readable rule and matched span.
+**Transparent findings beat mystery scores.** Every CLI finding traces to a rule and an exact span.
 
-## Open and portable
+## Open, portable, and private by design
 
-The skill has no API dependency, tracking, network call, or bundled binary. The CLI uses Node.js built-ins and has zero runtime dependencies. The files are readable, editable, testable, and MIT licensed.
+The skill has no API dependency, telemetry, network call, or bundled binary. The CLI uses Node.js built-ins and has zero runtime dependencies. Voice profiles store source basenames, types, hashes, word counts, feature-group evidence weights, and derived features. They do not store the source passages.
+
+The files are readable, editable, testable, and MIT licensed. See [PRIVACY.md](PRIVACY.md) and [TERMS.md](TERMS.md).
+
+## Research and credits
+
+The workflow was rebuilt through clean-room comparison with eight open writing skills and a review of primary research on detector reliability, style, factual consistency, text editing, and evaluation bias. No compared project endorses Prose Humanizer. See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) for project licenses and [references/research.md](references/research.md) for the evidence ledger.
 
 ## Contributing
 
-Reproducible failure cases, before-and-after examples, translations, rules, tests, and destination-specific guidance are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Reproducible failure cases, benchmark fixtures with clear provenance, translations, rules, and destination-specific guidance are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 If Prose Humanizer improves something you publish, consider starring the repository. It helps other writers find it.
-
-## Credits
-
-The first version was inspired by Ruben Hassid's article ["Can you detect AI?"](https://ruben.substack.com/p/how-to-bypass-ai-detectors). Later versions were informed by a comparative review of other open writing skills. See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) for project-specific credit and licensing notes.
 
 ## License
 

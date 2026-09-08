@@ -1,0 +1,1 @@
+Northline shipped invoice export on Tuesday with CSV and PDF support. Admins enable it in Billing settings. The beta included 43 teams. Two teams reported date-format problems, which Version 2.3 fixed on Friday.

@@ -1,0 +1,14 @@
+{
+  "$schema": "./schemas/prose-humanizer.schema.json",
+  "version": 1,
+  "language": "en",
+  "channel": "documentation",
+  "threshold": null,
+  "disabledRules": [],
+  "severityOverrides": {},
+  "exclude": [
+    "vendor/**",
+    "dist/**",
+    "**/*.min.js"
+  ]
+}

@@ -18,8 +18,8 @@ gemini_commands="$install_root/.gemini/commands"
 install_package() {
   destination=$1
   mkdir -p "$destination"
-  cp "$script_dir/SKILL.md" "$script_dir/package.json" "$script_dir/LICENSE" "$destination/"
-  for directory in agents assets bin evals references rules; do
+  cp "$script_dir/SKILL.md" "$script_dir/package.json" "$script_dir/LICENSE" "$script_dir/.prose-humanizer.example.json" "$destination/"
+  for directory in agents assets bin evals lib references rules schemas scripts; do
     mkdir -p "$destination/$directory"
     cp -R "$script_dir/$directory/." "$destination/$directory/"
   done

@@ -126,6 +126,34 @@ git clone https://github.com/amanmaqsood/prose-humanizer.git ~/.agents/skills/pr
 
 Do not copy only `SKILL.md` for a permanent installation. The current skill routes to files in `references/`, and the CLI uses `rules/`.
 
+## Configure a project
+
+Copy the example into the project you want to lint:
+
+```bash
+cp .prose-humanizer.example.json .prose-humanizer.json
+```
+
+On PowerShell:
+
+```powershell
+Copy-Item .prose-humanizer.example.json .prose-humanizer.json
+```
+
+The configuration is strict: unknown fields and unknown rule IDs fail instead of being ignored. It can set the content language and channel, exclude generated or vendored paths, disable individual rules, change finding severity, and define an optional project-specific density threshold. See [references/cli.md](references/cli.md) and [the JSON schema](schemas/prose-humanizer.schema.json).
+
+The pattern linter is English-only. The skill can edit other languages, but configure their language tag so the CLI skips English pattern assumptions. The CLI also refuses mechanical fixes for non-English, legal, and medical content.
+
+## Verify the installation
+
+```bash
+prose-lint --version
+prose-lint report README.md
+npm run benchmark
+```
+
+The `report` command is the supported machine-readable review interface. `score` remains only as a deprecated v3 compatibility alias and will be removed in v5.
+
 ## Removal
 
 The skills CLI can remove its installation:

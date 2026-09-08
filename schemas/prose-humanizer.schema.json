@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/amanmaqsood/prose-humanizer/blob/main/schemas/prose-humanizer.schema.json",
+  "title": "Prose Humanizer project configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]+)*$", "default": "en" },
+    "channel": {
+      "enum": ["general", "documentation", "email", "social", "academic", "marketing", "fiction", "technical", "legal", "medical"],
+      "default": "general"
+    },
+    "threshold": { "type": ["number", "null"], "minimum": 0, "default": null },
+    "disabledRules": { "type": "array", "uniqueItems": true, "items": { "type": "string" }, "default": [] },
+    "severityOverrides": {
+      "type": "object",
+      "additionalProperties": { "enum": ["info", "warning", "high"] },
+      "default": {}
+    },
+    "exclude": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "default": [] },
+    "generatedMarkers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "end": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      }
+    }
+  }
+}

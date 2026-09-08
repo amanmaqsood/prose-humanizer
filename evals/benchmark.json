@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "description": "Synthetic and permissively shareable invariants for factual fidelity, restraint, voice evidence, language preservation, and protected content.",
+  "humanPreferenceMeasured": false,
+  "cases": [
+    {
+      "id": "fact-fidelity",
+      "axis": "fidelity",
+      "source": "Northline shipped invoice export on Tuesday. It supports CSV and PDF. Admins enable it in Billing settings. The beta included 43 teams. Two teams reported date-format problems. Version 2.3 fixed those problems on Friday.",
+      "instruction": "Rewrite as a concise release note without adding claims.",
+      "required": ["Northline", "Tuesday", "CSV", "PDF", "Billing settings", "43 teams", "Two teams", "Version 2.3", "Friday"],
+      "forbidden": ["37%", "customers loved", "we shipped", "revenue", "did not ship", "does not support", "do not enable"],
+      "protected": [],
+      "forbidUnexpectedNumbers": true,
+      "forbidFirstPerson": true
+    },
+    {
+      "id": "minimum-edit",
+      "axis": "restraint",
+      "source": "I missed the first train, so I walked back for coffee. The second train was nearly empty. By 8:43, I was at my desk and less annoyed than I expected.",
+      "instruction": "Humanize only where a concrete improvement is necessary.",
+      "required": ["I missed the first train", "walked back for coffee", "8:43", "less annoyed than I expected"],
+      "forbidden": ["lesson", "journey", "silver lining"],
+      "protected": [],
+      "forbidUnexpectedNumbers": true,
+      "maxEditRatio": 0.15
+    },
+    {
+      "id": "voice-without-leakage",
+      "axis": "voice",
+      "source": "Voice sample: The launch was messy. Fine. We fixed the invoice bug, called three customers, and went home at 11:20. New facts: the mobile release slipped by one day because a certificate expired. Mina renewed it at 6:15 p.m. No customers were affected.",
+      "instruction": "Use the sample only for cadence. Write the new facts without reusing its events.",
+      "required": ["mobile release", "one day because a certificate expired", "Mina", "6:15 p.m.", "No customers were affected"],
+      "forbidden": ["invoice bug", "called three customers", "11:20", "went home"],
+      "protected": [],
+      "forbidUnexpectedNumbers": true
+    },
+    {
+      "id": "dialect-restraint",
+      "axis": "voice",
+      "source": "I’m not fixing what isn’t broken. The checkout works fine; the receipt emails don’t.",
+      "instruction": "Make the minimum effective edit without standardizing the speaker.",
+      "required": ["I’m not fixing what isn’t broken", "checkout works fine", "receipt emails don’t"],
+      "forbidden": ["It is important to note", "the user indicated"],
+      "protected": [],
+      "maxEditRatio": 0.08
+    },
+    {
+      "id": "uncertainty",
+      "axis": "fidelity",
+      "source": "The patch may reduce retry failures, but the team has not measured the effect yet.",
+      "instruction": "Rewrite plainly while preserving uncertainty.",
+      "required": ["may reduce", "has not measured"],
+      "forbidden": ["will reduce", "eliminates", "proved"],
+      "protected": [],
+      "forbidUnexpectedNumbers": true
+    },
+    {
+      "id": "protected-markdown",
+      "axis": "fidelity",
+      "source": "---\ntitle: A pivotal guide\n---\nIn order to run the tool, use [the pivotal command](https://example.com/pivotal).\n```sh\nprose-lint report draft.md\n```",
+      "instruction": "Apply safe prose fixes without changing metadata, links, or code.",
+      "required": ["To run the tool", "the pivotal command"],
+      "forbidden": [],
+      "protected": ["title: A pivotal guide", "https://example.com/pivotal", "prose-lint report draft.md"],
+      "forbidUnexpectedNumbers": true
+    },
+    {
+      "id": "language-preservation",
+      "axis": "voice",
+      "source": "No quiero que suene perfecto. Quiero que suene como yo: directo, un poco seco y sin una moraleja al final.",
+      "instruction": "Preserve Spanish and the stated voice. Do not translate or standardize it.",
+      "required": ["No quiero que suene perfecto", "directo", "un poco seco", "sin una moraleja"],
+      "forbidden": ["I want", "In conclusion", "Ultimately"],
+      "protected": [],
+      "maxEditRatio": 0.12
+    },
+    {
+      "id": "legal-scope",
+      "axis": "fidelity",
+      "source": "For this clause, “Service Day” means a weekday when the bank is open. A delayed notice may still be valid under Section 4.2.",
+      "instruction": "Improve readability without changing the defined term or legal modality.",
+      "required": ["“Service Day”", "weekday when the bank is open", "may still be valid", "Section 4.2"],
+      "forbidden": ["will be valid", "is always valid", "may not be valid"],
+      "protected": ["“Service Day”", "Section 4.2"],
+      "forbidUnexpectedNumbers": true
+    },
+    {
+      "id": "chronology-and-unknown-cause",
+      "axis": "fidelity",
+      "source": "The alert fired at 9:10 a.m. Priya restarted the worker at 9:18 a.m. Service recovered at 9:26 a.m. The cause is still unknown.",
+      "instruction": "Write a short incident update. Preserve chronology and do not infer a cause.",
+      "required": ["9:10 a.m.", "Priya", "9:18 a.m.", "9:26 a.m.", "cause is still unknown"],
+      "forbidden": ["caused by", "root cause", "therefore", "which caused"],
+      "protected": [],
+      "requiredOrder": ["9:10 a.m.", "9:18 a.m.", "9:26 a.m.", "cause is still unknown"],
+      "forbidUnexpectedNumbers": true,
+      "forbidFirstPerson": true
+    }
+  ]
+}

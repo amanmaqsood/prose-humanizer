@@ -2,3 +2,4 @@ __pycache__/
 *.py[cod]
 dist/
 *.tgz
+local-ballot/

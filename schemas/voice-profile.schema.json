@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/amanmaqsood/prose-humanizer/blob/main/schemas/voice-profile.schema.json",
+  "title": "Prose Humanizer privacy-safe voice profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "kind", "language", "rawProseStored", "learningPolicy", "sources", "features"],
+  "properties": {
+    "version": { "const": 1 },
+    "kind": { "const": "voice-profile" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]+)*$" },
+    "rawProseStored": { "const": false },
+    "learningPolicy": { "const": "user-confirmed" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type", "evidenceWeights", "sha256", "wordCount"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "enum": ["typed", "dictated", "ai-edited", "translated", "collaborative", "unknown"] },
+          "evidenceWeights": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sentence", "paragraph", "lexical", "punctuation"],
+            "properties": {
+              "sentence": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "paragraph": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "lexical": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "punctuation": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+            }
+          },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "wordCount": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value", "confidence", "evidence"],
+        "properties": {
+          "value": { "type": "number" },
+          "confidence": { "enum": ["low", "medium", "high"] },
+          "evidence": { "type": "string" }
+        }
+      }
+    }
+  }
+}

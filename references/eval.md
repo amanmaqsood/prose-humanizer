@@ -1,41 +1,72 @@
-# Prose Humanizer evaluation
+# Evaluation
 
-Use this pass after drafting or editing. Treat every applicable item as pass or fail. Fix failures before returning the content.
+Use this pass after drafting or editing. Evaluate the axes separately. Fidelity is a hard gate: a voice or fluency improvement cannot compensate for changed meaning.
 
-## Evidence
+## Axis 1: fidelity - hard gate
 
-1. Every relevant source claim remains, with the same scope, certainty, attribution, and qualification.
-2. No fact, example, statistic, quotation, citation, narrator, motive, cause, comparison, or conclusion was invented.
-3. Names, numbers, dates, links, quotations, and citations match the supplied evidence exactly.
-4. Hypotheticals are labeled, and uncertainty remains uncertainty.
+Pass only when all apply:
 
-## Voice and editing restraint
+1. Every relevant source proposition remains with the same scope, certainty, attribution, chronology, and qualification.
+2. Every output proposition is supported or clearly labeled as fiction, hypothesis, opinion, or placeholder.
+3. Entities, names, numbers, dates, defined terms, quotations, citations, links, and literal values are exact where required.
+4. Correlation did not become causation; possibility did not become certainty; one experience did not become a general rule.
+5. The output adds no narrator, experience, motive, relationship, comparison, outcome, customer reaction, or sourced-looking detail.
+6. Voice-sample facts and memorable phrases did not leak into the new content.
 
-1. The writer would recognize the vocabulary, cadence, directness, humor, uncertainty, and level of polish.
-2. Strong human sentences were left alone; the edit is proportional to the actual problems.
-3. Useful edge, technical precision, digressions, and mixed feelings survived.
-4. The rewrite did not add fake intimacy, slang, profanity, anecdotes, typos, or quirks.
+If any item fails, repair the output before evaluating the other axes.
 
-## Substance and structure
+## Axis 2: voice fit and restraint
 
-1. The opening reaches the subject without generic throat-clearing.
-2. Every paragraph advances the purpose rather than previewing or recapping it.
-3. Generic sentences pass the portability test or were removed or grounded in supplied detail.
-4. Paragraph and sentence shapes fit the ideas instead of repeating a template.
-5. The ending stops on an earned fact, consequence, choice, image, or next action.
+Evaluate each supported feature independently:
 
-## Pattern and format pass
+- cadence, paragraph shape, and clause density;
+- formality, directness, warmth, skepticism, humor, and emotional restraint;
+- contractions, questions, asides, fragments, repetition, and transitions;
+- vocabulary, domain terms, code-switching, punctuation, and formatting;
+- characteristic openings, explanations, disagreement, digressions, and endings.
 
-1. High-confidence structural patterns from `patterns.md` are removed unless the source voice or context justifies them.
-2. Watched vocabulary was evaluated in context rather than mechanically replaced with unusual synonyms.
-3. Formatting matches the destination; Markdown, headings, lists, emoji, hashtags, and sign-offs appear only where useful.
-4. Punctuation serves the sentence and does not imitate arbitrary human variation.
+Pass when the writer’s evidenced choices survived and the edit did not introduce a generic substitute persona. Strong source sentences remain unchanged. The depth of editing is proportional to actual problems. Dialect and non-native English are preserved without stereotyping or forced standardization.
 
-## Mode-specific checks
+The result must also satisfy the requested purpose, format, and channel. Restraint is not permission to leave source notes unshaped when the task requires a release note, email, thread, script, or another transformed artifact. If the source already satisfies that form, naming the channel alone is not a reason to reformat it.
 
-- **Detect:** every finding names a pattern, quotes the shortest useful span, and proposes a small fix. The response does not rewrite, score authorship, or guess who wrote the draft.
-- **File:** protected code, metadata, data, quotations, and link targets are unchanged, and unrelated diffs are absent.
-- **Repository audit:** files are ranked by review signals, not labeled as AI-authored, and no file was rewritten without selection.
-- **Embedded:** only the requested final content is returned.
+## Axis 3: naturalness and clarity
 
-The evaluation is complete only when every applicable item passes.
+Pass when:
+
+1. The opening reaches the subject without empty setup.
+2. Every sentence makes a recoverable claim, does necessary connective work, or contributes intentional voice.
+3. Concrete material comes from evidence rather than fabricated specificity.
+4. Sentence and paragraph shapes follow the thought instead of a repeated template.
+5. Transitions, questions, lists, headings, punctuation, and formatting fit the channel.
+6. The ending stops on an earned fact, implication, decision, image, or action.
+7. No random error, unusual synonym, fake intimacy, or mandatory “human marker” was added.
+
+## Mode contracts
+
+- **Detect:** name the pattern, quote the shortest useful span, explain it in context, and propose the smallest fix. Do not rewrite or estimate authorship.
+- **File:** protected content and unrelated diffs are unchanged; encoding and newline convention remain stable.
+- **Repository audit:** honor configured exclusions and generated paths; rank review signals without editing.
+- **Profile:** show feature-level confidence and provenance; do not claim identity or retain raw prose without permission.
+- **Embedded:** return only the artifact requested by the caller.
+
+## Audit notes
+
+When notes are requested, distinguish:
+
+- **changed:** the problem and specific benefit;
+- **left alone:** distinctive text deliberately preserved;
+- **uncertain:** a choice needing author input.
+
+Do not attach this report to ordinary short-form output.
+
+## Reproducible evaluation
+
+The repository’s automated benchmark checks explicit synthetic invariants:
+
+```text
+npm run benchmark
+```
+
+It does not measure human preference. Use `scripts/prepare_pairwise.js` to create blinded, randomized ballots and rate meaning before voice fit, naturalness, clarity, and overall preference. Swap or randomize candidate order, use multiple raters or judges, and report each axis rather than hiding tradeoffs in one number.
+
+See [research](research.md) for the evidence and limitations behind this evaluation design.
